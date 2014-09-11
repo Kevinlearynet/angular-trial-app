@@ -9,6 +9,20 @@
  Fonts & Icons
  controls centralized fonts and icon fonts
 ------------------------------------------------------------------------------*/
+@font-face {
+  font-family: 'Proxima Nova';
+  src: url('/assets/fonts/proximanova-regular-webfont.eot');
+  src: url('/assets/fonts/proximanova-regular-webfont.eot?#iefix') format('embedded-opentype'), url('/assets/fonts/proximanova-regular-webfont.woff2') format('woff2'), url('/assets/fonts/proximanova-regular-webfont.woff') format('woff'), url('/assets/fonts/proximanova-regular-webfont.ttf') format('truetype'), url('/assets/fonts/proximanova-regular-webfont.svg#proxima_nova_rgregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Proxima Nova';
+  src: url('/assets/fonts/proximanova-bold-webfont.eot');
+  src: url('/assets/fonts/proximanova-bold-webfont.eot?#iefix') format('embedded-opentype'), url('/assets/fonts/proximanova-bold-webfont.woff2') format('woff2'), url('/assets/fonts/proximanova-bold-webfont.woff') format('woff'), url('/assets/fonts/proximanova-bold-webfont.ttf') format('truetype'), url('/assets/fonts/proximanova-bold-webfont.svg#proxima_nova_rgbold') format('svg');
+  font-weight: bold;
+  font-style: normal;
+}
 /*------------------------------------------------------------------------------
  LESS Mixing
  handy mixins for simplified devices/browser support of LESS mixins
@@ -36,6 +50,22 @@ i.icon-search-glass {
   background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAWBJREFUeNqck98rBFEUx2fGb7VYWRJPHswmvJBIatoXXtbf4smrv8iLFUlKeVJePFhsktSWSCyLZH/4nOnMdBvJzalPZ+bec773nJlz3bX1DSey1Xw+g5uCEeiCL3iAC7jaKhScpLVqorg5mIQz2INX6FQx2csSt4/I5w8BbBbGYJOAirH/AU8kSgU5WOZ5m5hGFOCx0I+fht1Ecmys13AH0KZVxuZpz8Xfkg2ROu5Y4rXlWGAUrh07K2vbfaZAN7zYZFNFU2NTpkBDva1JBTVT4BkGbTLpvR3XCxVTQPqfsDzdh3taeTcFZHAGUB//4/Qh3AycmOst6cxw3fd9GdccPny+LJWaiWSZxhV9PWU/nkY3ugsEyXcIRBRuoAodOsppnYGUtrFDG49hBfOLQSiA6hunn+tv6tEkF27hiIQ7YsrESHiAl/eqa95GW6PaLG5Bxttz/mFUI5frEJa+BRgA4PF5TFfsy0UAAAAASUVORK5CYII=');
 }
 /*------------------------------------------------------------------------------
+  Document
+------------------------------------------------------------------------------*/
+body {
+  font-family: "Proxima Nova", sans-serif;
+  line-height: 1.5;
+  font-size: 16px;
+  color: #70767f;
+}
+a {
+  text-decoration: none;
+  color: #bec3cc;
+}
+a:hover {
+  color: #3f454d;
+}
+/*------------------------------------------------------------------------------
   Layout
 ------------------------------------------------------------------------------*/
 .container {
@@ -51,9 +81,9 @@ header.navbar {
   background-color: #262728;
   position: fixed;
   padding: 15px 0;
-  height: 60px;
-  overflow: hidden;
+  height: 30px;
   width: 100%;
+  z-index: 2;
 }
 header.navbar .container {
   zoom: 1;
@@ -86,19 +116,19 @@ header.navbar .logo {
   display: table;
   clear: both;
 }
-.user-panel .user-panel-create,
-.user-panel .user-panel-search,
-.user-panel .user-panel-dropdown {
+.user-panel-create,
+.user-panel-search,
+.user-panel-dropdown {
   float: left;
   margin-right: 23px;
 }
-.user-panel .user-panel-create {
+.user-panel-create {
   cursor: pointer;
 }
-.user-panel .user-panel-create .icon-create-message {
+.user-panel-create .icon-create-message {
   height: 30px;
 }
-.user-panel .user-panel-search {
+.user-panel-search {
   width: 198px;
   height: 28px;
   color: #7d7d7e;
@@ -110,7 +140,7 @@ header.navbar .logo {
   border-radius: 4px;
   overflow: hidden;
 }
-.user-panel .user-panel-search input[type="search"] {
+.user-panel-search input[type="search"] {
   display: block;
   border: none;
   background-color: none;
@@ -126,7 +156,7 @@ header.navbar .logo {
   color: #7d7d7e;
   color: rgba(255, 255, 255, 0.4);
 }
-.user-panel .user-panel-search button.find {
+.user-panel-search button.find {
   border: none;
   display: block;
   padding: 0;
@@ -139,20 +169,63 @@ header.navbar .logo {
   height: 20px;
   background: transparent;
 }
-.user-panel .user-panel-search button.find i {
+.user-panel-search button.find i {
   width: 20px;
   height: 20px;
 }
-.user-panel .user-panel-dropdown .dropdown-toggle {
+.user-panel-dropdown {
+  position: relative;
+  height: 45px;
+  cursor: pointer;
+}
+.user-panel-dropdown .dropdown-toggle {
   display: block;
 }
-.user-panel .user-panel-dropdown .dropdown-toggle i.icon-carat {
+.user-panel-dropdown .dropdown-toggle i.icon-carat {
   position: relative;
   top: -7px;
   left: 1px;
 }
-.user-panel .user-panel-dropdown .dropdown-menu {
+.user-panel-dropdown .dropdown-menu {
   display: none;
+  position: absolute;
+  width: 96px;
+  right: -13px;
+  background-color: white;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  margin: 2px 0 0;
+  padding: 2px 0;
+  line-height: 100%;
+  font-size: 13px;
+}
+.user-panel-dropdown .dropdown-menu li + li {
+  border-top: 1px solid #dee1e5;
+}
+.user-panel-dropdown .dropdown-menu a {
+  padding: 8px 16px 6px;
+  display: block;
+  line-height: 1.2em;
+  color: #70767f;
+}
+.user-panel-dropdown .dropdown-menu a:hover {
+  color: #3f454d;
+}
+.user-panel-dropdown .dropdown-menu:before {
+  content: "";
+  display: block;
+  position: absolute;
+  right: 15px;
+  top: -5px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 5px 5px 5px;
+  border-color: transparent transparent white transparent;
+}
+.user-panel-dropdown:hover .dropdown-menu {
+  display: block;
 }
 /*------------------------------------------------------------------------------
   Hero

@@ -14,6 +14,26 @@
 @import url('/app/vendor/html5-boilerplate/css/normalize.css');
 @import url('/app/vendor/html5-boilerplate/css/main.css');
 
+
+/*------------------------------------------------------------------------------
+  Document
+------------------------------------------------------------------------------*/
+
+body {
+	font-family: @body-font;
+	line-height: 1.5;
+	font-size: 16px;
+	color: @text-color;
+}
+a {
+	text-decoration: none;
+	color: @link-color;
+	&:hover {
+		color: @link-color-hover;
+	}
+}
+
+
 /*------------------------------------------------------------------------------
   Layout
 ------------------------------------------------------------------------------*/
@@ -35,9 +55,9 @@ header.navbar {
     background-color: #262728;
     position: fixed;
     padding: 15px 0;
-    height: 60px;
-    overflow: hidden;
+    height: 30px;
     width: 100%;
+    z-index: 2;
    	.container {
     	.clearfix();
     }
@@ -53,80 +73,123 @@ header.navbar {
 	margin-right: -28px; // neutralize margin-right + icon-carat offset
 	float: right;
 	.clearfix();
-	.user-panel-create,
-	.user-panel-search,
-	.user-panel-dropdown {
-		float: left;
-		margin-right: 23px;
+}
+.user-panel-create,
+.user-panel-search,
+.user-panel-dropdown {
+	float: left;
+	margin-right: 23px;
+}
+
+// create message
+.user-panel-create {
+	cursor: pointer;
+	.icon-create-message {
+		height: 30px;
 	}
+}
 
-	// create message
-    .user-panel-create {
-    	cursor: pointer;
-		.icon-create-message {
-			height: 30px;
-		}
-    }
-
-    // search box
-    .user-panel-search {
-    	width: 198px;
-    	height: 28px;
-    	color: #7d7d7e;
-    	border: 1px solid #464748;
-    	border-color: rgba(255, 255, 255, 0.15);
-    	position: relative;
-    	.border-radius( 4px );
-    	overflow: hidden;
-		input[type="search"] {
-			display: block;
-			border: none;
-			background-color: none;
-			position: absolute;
-			top: 1px;
-			left: 1px;
-			bottom: 1px;
-			width: 184px;
-			padding: 0 6px;
-			font-size: 12px;
-			margin: 0;
-			background: transparent;
-			color: #7d7d7e;
-			color: rgba(255, 255, 255, 0.4);
-		}
-		button.find {
-			border: none;
-			display: block;
-			padding: 0;
-			margin: 0;
-			position: absolute;
-			top: 4px;
-			bottom: 4px;
-			right: 4px;
+// search box
+.user-panel-search {
+	width: 198px;
+	height: 28px;
+	color: #7d7d7e;
+	border: 1px solid #464748;
+	border-color: rgba(255, 255, 255, 0.15);
+	position: relative;
+	.border-radius( 4px );
+	overflow: hidden;
+	input[type="search"] {
+		display: block;
+		border: none;
+		background-color: none;
+		position: absolute;
+		top: 1px;
+		left: 1px;
+		bottom: 1px;
+		width: 184px;
+		padding: 0 6px;
+		font-size: 12px;
+		margin: 0;
+		background: transparent;
+		color: #7d7d7e;
+		color: rgba(255, 255, 255, 0.4);
+	}
+	button.find {
+		border: none;
+		display: block;
+		padding: 0;
+		margin: 0;
+		position: absolute;
+		top: 4px;
+		bottom: 4px;
+		right: 4px;
+		width: 20px;
+		height: 20px;
+		background: transparent;
+		i {
 			width: 20px;
 			height: 20px;
-			background: transparent;
-			i {
-				width: 20px;
-				height: 20px;
+		}
+	}
+}
+
+// dropdown menu
+.user-panel-dropdown {
+	position: relative;
+	height: 45px;
+	cursor: pointer;
+	.dropdown-toggle {
+		display: block;
+		i.icon-carat {
+			position: relative;
+			top: -7px;
+			left: 1px;
+		}
+	}
+	.dropdown-menu {
+		display: none;
+		position: absolute;
+		width: 96px;
+		right: -13px;
+		background-color: white;
+		.border-radius( 4px );
+		margin: 2px 0 0;
+		padding: 2px 0;
+		line-height: 100%;
+		font-size: 13px;
+		li + li {
+			border-top: 1px solid @light-border;
+		}
+		a {
+			padding: 8px 16px 6px;
+			display: block;
+			line-height: 1.2em;
+			color: @text-color;
+			&:hover {
+				color: @link-color-hover;
 			}
 		}
-    }
+		&:before {
+			content: "";
+			display: block;
+			position: absolute;
+			right: 15px;
+			top: -5px;
+			width: 0;
+			height: 0;
+			border-style: solid;
+			border-width: 0 5px 5px 5px;
+			border-color: transparent transparent white transparent;
+		}
+	}
 
-    // dropdown menu
-    .user-panel-dropdown {
-    	.dropdown-toggle {
-    		display: block;
-    		i.icon-carat {
-				position: relative;
-				top: -7px;
-				left: 1px;
-    		}
-    	}
+	// hover
+	&:hover {
 		.dropdown-menu {
-    		display: none;
-    	}
-    }
+			display: block;
+		}
+	}
 }
 
 
