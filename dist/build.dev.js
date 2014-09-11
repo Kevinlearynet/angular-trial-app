@@ -23669,105 +23669,157 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 // Place any jQuery/helper plugins in here.
 ;'use strict';
 
-// app level module depends views & components
-angular.module( 'simplySocial', [
-	'ngRoute',
-	'simplySocial.account',
-	'simplySocial.home'
-] ).
-config( [ '$routeProvider',
-	function ( $routeProvider ) {
-		$routeProvider.otherwise( {
-			redirectTo: '/home'
-		} );
-	}
-] );;'use strict';
+var SimplySocial = angular.module( 'SimplySocial', [ 'ngRoute' ] );
 
-angular.module('simplySocial.version.interpolate-filter', [])
+( function ( angular, app ) {
 
-.filter('interpolate', ['version',
-    function(version) {
-        return function(text) {
-            return String(text).replace(/\%VERSION\%/mg, version);
-        };
-    }
-]);;'use strict';
+	// routing
+	app.config( [ '$routeProvider',
+		function ( $routeProvider ) {
 
-angular.module('simplySocial.version.version-directive', [])
+			// home
+			$routeProvider.when( '/home', {
+				templateUrl: '/views/posts.html'
+			} );
 
-.directive('appVersion', ['version',
-    function(version) {
-        return function(scope, elm, attrs) {
-            elm.text(version);
-        };
-    }
-]);;'use strict';
+			// account > followers
+			$routeProvider.when( '/account/followers', {
+				templateUrl: '/views/account_followers.html',
+				controller: 'accountFollowers'
+			} );
 
-angular.module('simplySocial.version', [
-    'simplySocial.version.interpolate-filter',
-    'simplySocial.version.version-directive'
-])
+			// account > following
+			$routeProvider.when( '/account/following', {
+				templateUrl: '/views/account_following.html',
+				controller: 'accountFollowing'
+			} );
 
-.value('version', '0.1');;'use strict';
+			// account > settings
+			$routeProvider.when( '/account/settings', {
+				templateUrl: '/views/account_settings.html',
+				controller: 'accountSettings'
+			} );
 
-angular.module( 'simplySocial.account', [ 'ngRoute' ] )
+			// default
+			$routeProvider.otherwise( {
+				redirectTo: '/home'
+			} );
 
-/**
- * /account/ routing
- *
- * Controls routing and scope for the profile section of the app
+		}
+	] );
+
+	// root expressions
+	app.run( function ( $rootScope ) {
+		$rootScope.siteName = 'Simply Social';
+		$rootScope.currentYear = new Date().getFullYear();
+	} );
+
+} )( angular, SimplySocial );;/**
+ * Post Controllers
  */
-.config( [ '$routeProvider',
-	function ( $routeProvider ) {
 
-		$routeProvider.when( '/account', {
-			redirectTo: '/account/profile'
-		} );
-
-		// profile
-		$routeProvider.when( '/account/profile', {
-			templateUrl: '/app/views/account/profile.html',
-			controller: 'accountProfileCtrl'
-		} );
-
-		// followers
-		$routeProvider.when( '/account/followers', {
-			templateUrl: '/app/views/account/followers.html',
-			controller: 'accountFollowersCtrl'
-		} );
-
-		// following
-		$routeProvider.when( '/account/following', {
-			templateUrl: '/app/views/account/following.html',
-			controller: 'followingCtrl'
-		} );
-	}
-] )
-
-/**
- * Account > Profile Controller
+"use strict";
+( function ( angular, app ) {
+	// add a post
+	app.controller( "AddPostCtrl", [ '$scope', 'Post',
+		function ( scope, Post ) {
+			scope.$on( 'posts.update', function ( event ) {
+				scope.posts = Post.posts;
+			} );
+			scope.posts = Post.posts;
+		}
+	] );
+} )( angular, SimplySocial );;/**
+ * Post Controllers
  */
-.controller( 'accountProfileCtrl', [
 
-	function ( $scope ) {
-		console.log( 'Controller for account loaded' );
-	}
-] );;;'use strict';
+"use strict";
+( function ( angular, app ) {
+	// list view
+	app.controller( "PostListCtrl", [ '$scope', 'Post',
+		function ( scope, Post ) {
+			scope.$on( 'posts.update', function ( event ) {
+				scope.posts = Post.posts;
+			} );
+			scope.posts = Post.posts;
+		}
+	] );
+} )( angular, SimplySocial );;"use strict";
+( function ( angular, app ) {
+	app.service( 'Post', [ '$rootScope',
+		function ( $rootScope ) {
+			var service = {
+				posts: [ {
+					id: 1,
+					name: "Sam Soffes",
+					avatar: "http://www.gravatar.com/avatar/0a9380f35d52fd24ae753a1186878b55.jpg?s=30",
+					message: "How to Get Inspired: the Right Way - Designmodo bit.ly/1lE4uJc Good stuff from @designmodo!",
+					time: new Date( 1410432001 * 1000 ),
+					photo: "",
+					video: "",
+					replies: [ {
+						id: 2,
+						name: "Kevin Leary",
+						avatar: "http://www.gravatar.com/avatar/0a9380f35d52fd24ae753a1186878b55.jpg?s=30",
+						message: "Following up on this...",
+						time: new Date( 1410468002 * 1000 ),
+					}, {
+						id: 3,
+						name: "Kevin Leary",
+						avatar: "http://www.gravatar.com/avatar/0a9380f35d52fd24ae753a1186878b55.jpg?s=30",
+						message: "Following up on this...",
+						time: new Date( 1410468002 * 1000 ),
+					} ]
+				}, {
+					id: 1,
+					name: "Sam Soffes",
+					avatar: "http://www.gravatar.com/avatar/0a9380f35d52fd24ae753a1186878b55.jpg?s=30",
+					message: "How to Get Inspired: the Right Way - Designmodo bit.ly/1lE4uJc Good stuff from @designmodo!",
+					time: new Date( 1410432001 * 1000 ),
+					photo: "",
+					video: "",
+					replies: [ {
+						id: 2,
+						name: "Kevin Leary",
+						avatar: "http://www.gravatar.com/avatar/0a9380f35d52fd24ae753a1186878b55.jpg?s=30",
+						message: "Following up on this...",
+						time: new Date( 1410468002 * 1000 ),
+					}, {
+						id: 3,
+						name: "Kevin Leary",
+						avatar: "http://www.gravatar.com/avatar/0a9380f35d52fd24ae753a1186878b55.jpg?s=30",
+						message: "Following up on this...",
+						time: new Date( 1410468002 * 1000 ),
+					} ]
+				}, {
+					id: 1,
+					name: "Sam Soffes",
+					avatar: "http://www.gravatar.com/avatar/0a9380f35d52fd24ae753a1186878b55.jpg?s=30",
+					message: "How to Get Inspired: the Right Way - Designmodo bit.ly/1lE4uJc Good stuff from @designmodo!",
+					time: new Date( 1410432001 * 1000 ),
+					photo: "",
+					video: "",
+					replies: [ {
+						id: 2,
+						name: "Kevin Leary",
+						avatar: "http://www.gravatar.com/avatar/0a9380f35d52fd24ae753a1186878b55.jpg?s=30",
+						message: "Following up on this...",
+						time: new Date( 1410468002 * 1000 ),
+					}, {
+						id: 3,
+						name: "Kevin Leary",
+						avatar: "http://www.gravatar.com/avatar/0a9380f35d52fd24ae753a1186878b55.jpg?s=30",
+						message: "Following up on this...",
+						time: new Date( 1410468002 * 1000 ),
+					} ]
+				} ],
 
-angular.module( 'simplySocial.home', [ 'ngRoute' ] )
-
-.config( [ '$routeProvider',
-	function ( $routeProvider ) {
-		$routeProvider.when( '/home', {
-			templateUrl: 'views/home/home.html',
-			controller: 'homeCtrl'
-		} );
-	}
-] )
-
-.controller( 'homeCtrl', [
-
-	function ( $scope ) {
-		console.log( 'Controller for home loaded' );
-	}
-] );
+			addPost: function ( post ) {
+					service.posts.push( post );
+					$rootScope.$broadcast( 'posts.update' );
+				}
+			};
+			return service;
+		}
+	] );
+} )( angular, SimplySocial );

@@ -11,13 +11,15 @@ module.exports = function ( grunt ) {
 				},
 				src: [
 					// bower managed vendor libraries
-					'app/vendor/**/*.js',
-					'!app/vendor/**/*.min.js',
+					'scripts/vendor/**/*.js',
+					'!scripts/vendor/**/*.min.js',
 
 					// angular app
-					'app/app.js',
-					'app/components/**/*.js',
-					'app/views/**/*.js'
+					'scripts/app.js',
+					'scripts/controllers/**/*.js',
+					'scripts/directives/**/*.js',
+					'scripts/filters/**/*.js',
+					'scripts/services/**/*.js'
 				],
 				dest: 'dist/build.dev.js'
 			}
@@ -37,7 +39,7 @@ module.exports = function ( grunt ) {
 		less: {
 			style: {
 				files: {
-					"dist/main.dev.css": "assets/css/main.less"
+					"dist/main.dev.css": "styles/less/main.less"
 				}
 			}
 		},
@@ -62,9 +64,12 @@ module.exports = function ( grunt ) {
 		watch: {
 			js: {
 				files: [
-					'app/app.js',
-					'app/components/**/*.js',
-					'app/views/**/*.js'
+					'scripts/app.js',
+					'scripts/controllers/*.js',
+					'scripts/directives/*.js',
+					'scripts/filters/*.js',
+					'scripts/filters/*.js',
+					'scripts/services/*.js'
 				],
 				tasks: [ 'concat:js', 'uglify:js' ],
 				options: {
@@ -72,7 +77,7 @@ module.exports = function ( grunt ) {
 				}
 			},
 			css: {
-				files: [ 'assets/css/*.less' ],
+				files: [ 'styles/less/*.less' ],
 				tasks: [ 'less:style', 'concat_css', 'cssmin:minify', 'clean' ],
 				options: {
 					livereload: true

@@ -1,0 +1,37 @@
+<section class="hero">
+	<form ng-controller="AddPostCtrl">
+		<input type="text" placeholder="What's on your mind?">
+		<a ng-click="addPhoto"><i class="icon-photo"></i> Add Photo</a>
+		<a ng-click="addVideo"><i class="icon-video"></i> Add Video</a>
+	</form>
+
+	<nav class="posts-nav">
+		<ul class="posts-filter">
+			<li><a href="/#/home/">All Posts</a></li>
+			<li><a href="/#/home/photos">Photos</a></li>
+			<li><a href="/#/home/videos">Videos</a></li>
+		</ul>
+		<ul class="posts-layout">
+			<li><a ng-click="postsLayout('list')"><i class="icon-list"></i></a></li>
+			<li><a ng-click="postsLayout('grid')"><i class="icon-grid"></i></a></li>
+		<ul>
+	</nav>
+</section>
+
+<main ng-controller="PostListCtrl">
+	<article class="post" ng-repeat="post in posts" id="{{id}}">
+		<img class="avatar" alt="{{post.name}}" ng-src="{{post.avatar}}">
+		<div class="post-content">
+			<strong class="full-name">{{post.name}}</strong>
+			<div class="actions">
+				<a ><i class="icon-reply"></i></a>
+				<a ><i class="icon-like"></i></a>
+				<span class="time">{{post.time}}</span>
+			</div>
+			<p>{{post.message}}</p>
+			<figure class="post-photo" ng-if="post.photo">
+				<img ng-src="{{post.photo}}">
+			</figure>
+		</div>
+	</article>
+</main>
