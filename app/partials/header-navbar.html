@@ -1,6 +1,6 @@
-<a href="/" class="logo">InVision App</a>
 <header class="navbar">
     <div class="inner">
+        <a href="/" class="logo">Simply Social</a>
         <a ng-open-modal="createMessage" class="logo">
             <i class="create-message"></i>
         </a>
@@ -10,25 +10,27 @@
                 <input type="search" value="">
                 <button class="find">Find</button>
             </div>
-            <ul>
-                <li class="dropdown">
-                    <a ng-click="" data-toggle="dropdown" class="dropdown-toggle"><span class="user" ng-class="{ 'enterprise' : isEnterprise || isEnterpriseUser }"><span class="m-avatar" ng-class="{ 'system-avatar': user.hasSystemAvatar }"><span class="rendering ng-binding">KL</span> <img ng-src="/avatars/92985768-B8F5-A583-722A513B04ECDB91" class="rendering" src="/avatars/92985768-B8F5-A583-722A513B04ECDB91"></span></span></a>
-                    <ul class="dropdown-menu" id="menu3">
-                        <li>
-                            <a href="#/team/19668359/profile">Profile</a>
-                        </li>
-                        <li ui-if="!isEnterprise &amp;&amp; !isEnterpriseUser" class="ng-scope">
-                            <a ng-click="openChangePlanModal()">Upgrade Plan</a>
-                        </li>
-                        <li class="sync">
-                            <a ng-click="openModalWindow('syncDownload')">Desktop Sync</a>
-                        </li>
-                        <li class="logout">
-                            <a ng-click="logout()" ng-href="/logout?token=28390e98d47971faaa41d1cd174f55cc" href="/logout?token=28390e98d47971faaa41d1cd174f55cc">Sign Out</a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
+            <nav class="dropdown">
+                <a data-toggle="dropdown-menu" class="dropdown-toggle">
+                    <span class="m-avatar">
+						<img src="http://www.gravatar.com/avatar/0a9380f35d52fd24ae753a1186878b55.jpg?s=30">
+					</span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="#/account/profile">Profile</a>
+                    </li>
+                    <li><a href="#/account/followers">Followers</a>
+                    </li>
+                    <li><a href="#/account/following">Following</a>
+                    </li>
+                    <li><a href="#/account/settings">Settings</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </div>
 </header>
+
+<section class="hero">
+
+</section>

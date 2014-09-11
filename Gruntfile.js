@@ -36,7 +36,7 @@ module.exports = function(grunt) {
         less: {
             style: {
                 files: {
-                    "dist/main.dev.css": "app/styles/main.less"
+                    "dist/main.dev.css": "assets/css/main.less"
                 }
             }
         },
@@ -71,7 +71,7 @@ module.exports = function(grunt) {
                 }
             },
             css: {
-                files: ['app/styles/*.less'],
+                files: ['assets/css/*.less'],
                 tasks: ['less:style', 'concat_css', 'cssmin:minify', 'clean'],
                 options: {
                     livereload: true
