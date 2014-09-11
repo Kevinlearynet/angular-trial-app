@@ -18,10 +18,30 @@
  controls centralized vars used accross our CSS
 ------------------------------------------------------------------------------*/
 /*------------------------------------------------------------------------------
+  Encoded Images
+
+  base64 encoded images for fewer request, only use this approach for smaller
+  images.
+------------------------------------------------------------------------------*/
+.logo {
+  background-image: url('data:image/png;base64,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');
+}
+i.icon-create-message {
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAaCAYAAADWm14/AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAthJREFUeNq8lntoT2EYx8/ZRihWFg21lcgiRau5hCa5RLKIjLA/JDShECkbxdDo51IKLZcQkXKJ3JLlVtYmJdbcY7lPM7mt4/PoOXr37szOj9/v99Sn53fe857zfH/Ped/neV3P8xzT3IrdbXH5MAkGQVdIccLbR6iG81AGz4MmednzfvsUK3gebju8h/2wDl7CjygEpMFAmAwPYA+sgi9Bk10/AwQvwi2FhXAEhd7fojA/jJhesA86wFh4G5gBXjYXtwByuFHtxM5qIBcOwkn9/dOckETwbvgIzIhxcN8kYAF0hkX2zSSQf3+J4Fec+Nk3WK6f2LUFyGI54MTfZFe0h2xbQH+oTICARqiCvraAZPjsJMYaNAtNBLyDjAQJyLALkwi4DOMTELw79IPbtgCpeIVsx9Q4C+gIm+BDEwFsv3P4u7ATEW4cBTyENUF1QGwWDJHmgYh2/xlIClsx3IBX2kuuwWptbM0FkIXXuBGQJVsFEdOhzT8EX6KdsDdshdEwTrILA+AJzA9sRtoTkjUbK3XRXIcXUAdrEdpgzJ2N6ynj8h+0c8rYFKhoQaBk+Ths412bmwmwul0f3GBI13aay0NVuk5KYA6UwhYYBme1ytUYr1kB9bDLGJPCdxOG877KFgVYYp7i5KxwT/u7fK4x8FinnIZbsN56NKLZK7bGN0AmAmZGc9KRnn5Ci8lQeGPcG6WNJqwdgwvmLghj0tOlVoxEuRk8VcurX+FO6ZoQFkORcX1Y5zyDLk4UZz1PG0k+wb9b9z5pu01XEVONel+i9zfqtX8s6+EXpLAZmADTAoL7dlXbut/76xT5/dW49p/P02fCZYDA91uZEtEzxVGoNcbrtQOalgnLYGI0nyDMYUMW6EU9zj/Scf/7+5alO2Yvf6o82kXYmhXCGT3clOpOSdPFJtt2B9yBQ3o8c2ItoFErqBSvThqoVntBmZ4Fc7Qm/MnKLwEGAIHb2s3X94B1AAAAAElFTkSuQmCC');
+}
+i.icon-carat {
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAECAYAAABCxiV9AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAClJREFUeNpiLChraGDAAZj6O+uxSoLEmWAMdAkw4////3AMsgKZDxBgAOc1HhyeD0BTAAAAAElFTkSuQmCC');
+}
+i.icon-search-glass {
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAWBJREFUeNqck98rBFEUx2fGb7VYWRJPHswmvJBIatoXXtbf4smrv8iLFUlKeVJePFhsktSWSCyLZH/4nOnMdBvJzalPZ+bec773nJlz3bX1DSey1Xw+g5uCEeiCL3iAC7jaKhScpLVqorg5mIQz2INX6FQx2csSt4/I5w8BbBbGYJOAirH/AU8kSgU5WOZ5m5hGFOCx0I+fht1Ecmys13AH0KZVxuZpz8Xfkg2ROu5Y4rXlWGAUrh07K2vbfaZAN7zYZFNFU2NTpkBDva1JBTVT4BkGbTLpvR3XCxVTQPqfsDzdh3taeTcFZHAGUB//4/Qh3AycmOst6cxw3fd9GdccPny+LJWaiWSZxhV9PWU/nkY3ugsEyXcIRBRuoAodOsppnYGUtrFDG49hBfOLQSiA6hunn+tv6tEkF27hiIQ7YsrESHiAl/eqa95GW6PaLG5Bxttz/mFUI5frEJa+BRgA4PF5TFfsy0UAAAAASUVORK5CYII=');
+}
+/*------------------------------------------------------------------------------
   Layout
 ------------------------------------------------------------------------------*/
 .container {
   max-width: 1300px;
+  padding-left: 20px;
+  padding-right: 20px;
   margin: 0 auto;
 }
 /*------------------------------------------------------------------------------
@@ -35,6 +55,105 @@ header.navbar {
   overflow: hidden;
   width: 100%;
 }
+header.navbar .container {
+  zoom: 1;
+}
+header.navbar .container:before {
+  content: '';
+  display: block;
+}
+header.navbar .container:after {
+  content: '';
+  display: table;
+  clear: both;
+}
+header.navbar .logo {
+  padding: 4px 5px;
+  margin: 0 -5px;
+  float: left;
+}
+.user-panel {
+  margin-right: -28px;
+  float: right;
+  zoom: 1;
+}
+.user-panel:before {
+  content: '';
+  display: block;
+}
+.user-panel:after {
+  content: '';
+  display: table;
+  clear: both;
+}
+.user-panel .user-panel-create,
+.user-panel .user-panel-search,
+.user-panel .user-panel-dropdown {
+  float: left;
+  margin-right: 23px;
+}
+.user-panel .user-panel-create {
+  cursor: pointer;
+}
+.user-panel .user-panel-create .icon-create-message {
+  height: 30px;
+}
+.user-panel .user-panel-search {
+  width: 198px;
+  height: 28px;
+  color: #7d7d7e;
+  border: 1px solid #464748;
+  border-color: rgba(255, 255, 255, 0.15);
+  position: relative;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.user-panel .user-panel-search input[type="search"] {
+  display: block;
+  border: none;
+  background-color: none;
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  bottom: 1px;
+  width: 184px;
+  padding: 0 6px;
+  font-size: 12px;
+  margin: 0;
+  background: transparent;
+  color: #7d7d7e;
+  color: rgba(255, 255, 255, 0.4);
+}
+.user-panel .user-panel-search button.find {
+  border: none;
+  display: block;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  right: 4px;
+  width: 20px;
+  height: 20px;
+  background: transparent;
+}
+.user-panel .user-panel-search button.find i {
+  width: 20px;
+  height: 20px;
+}
+.user-panel .user-panel-dropdown .dropdown-toggle {
+  display: block;
+}
+.user-panel .user-panel-dropdown .dropdown-toggle i.icon-carat {
+  position: relative;
+  top: -7px;
+  left: 1px;
+}
+.user-panel .user-panel-dropdown .dropdown-menu {
+  display: none;
+}
 /*------------------------------------------------------------------------------
   Hero
   displays large graphic below the top navbar
@@ -45,6 +164,46 @@ header.navbar {
   padding-top: 125px;
   position: relative;
   top: 60px;
+}
+.logo {
+  width: 138px;
+  height: 26px;
+  display: inline-block;
+  text-indent: -2000em;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+/*------------------------------------------------------------------------------
+  Globals
+------------------------------------------------------------------------------*/
+i.icon-create-message {
+  display: block;
+  width: 32px;
+  height: 26px;
+  display: inline-block;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+i.icon-carat {
+  width: 17px;
+  height: 14px;
+  display: inline-block;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+i.icon-search-glass {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+.m-avatar {
+  display: inline-block;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  overflow: hidden;
 }
 /*------------------------------------------------------------------------------
   Footer

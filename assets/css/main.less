@@ -6,8 +6,10 @@
 
 // compiled by grunt-contrib-less
 @import url('fonts.less');
-@import url('elements.less');
+@import url('mixins.less');
 @import url('library.less');
+@import url('images.less');
+
 // compiled by grunt-concat-css
 @import url('/app/vendor/html5-boilerplate/css/normalize.css');
 @import url('/app/vendor/html5-boilerplate/css/main.css');
@@ -18,8 +20,12 @@
 
 .container {
     max-width: 1300px;
+    padding-left: 20px;
+    padding-right: 20px;
     margin: 0 auto;
 }
+
+
 /*------------------------------------------------------------------------------
   Header
 ------------------------------------------------------------------------------*/
@@ -32,12 +38,98 @@ header.navbar {
     height: 60px;
     overflow: hidden;
     width: 100%;
-    .logo {}
+   	.container {
+    	.clearfix();
+    }
+    .logo {
+		padding: 4px 5px;
+		margin: 0 -5px;
+		float: left;
+    }
 }
+
 // user panel: account specific tools
 .user-panel {
-    .create {} .search {} .dropdown {}
+	margin-right: -28px; // neutralize margin-right + icon-carat offset
+	float: right;
+	.clearfix();
+	.user-panel-create,
+	.user-panel-search,
+	.user-panel-dropdown {
+		float: left;
+		margin-right: 23px;
+	}
+
+	// create message
+    .user-panel-create {
+    	cursor: pointer;
+		.icon-create-message {
+			height: 30px;
+		}
+    }
+
+    // search box
+    .user-panel-search {
+    	width: 198px;
+    	height: 28px;
+    	color: #7d7d7e;
+    	border: 1px solid #464748;
+    	border-color: rgba(255, 255, 255, 0.15);
+    	position: relative;
+    	.border-radius( 4px );
+    	overflow: hidden;
+		input[type="search"] {
+			display: block;
+			border: none;
+			background-color: none;
+			position: absolute;
+			top: 1px;
+			left: 1px;
+			bottom: 1px;
+			width: 184px;
+			padding: 0 6px;
+			font-size: 12px;
+			margin: 0;
+			background: transparent;
+			color: #7d7d7e;
+			color: rgba(255, 255, 255, 0.4);
+		}
+		button.find {
+			border: none;
+			display: block;
+			padding: 0;
+			margin: 0;
+			position: absolute;
+			top: 4px;
+			bottom: 4px;
+			right: 4px;
+			width: 20px;
+			height: 20px;
+			background: transparent;
+			i {
+				width: 20px;
+				height: 20px;
+			}
+		}
+    }
+
+    // dropdown menu
+    .user-panel-dropdown {
+    	.dropdown-toggle {
+    		display: block;
+    		i.icon-carat {
+				position: relative;
+				top: -7px;
+				left: 1px;
+    		}
+    	}
+		.dropdown-menu {
+    		display: none;
+    	}
+    }
 }
+
+
 /*------------------------------------------------------------------------------
   Hero
   displays large graphic below the top navbar
@@ -50,8 +142,53 @@ header.navbar {
     position: relative;
     top: 60px;
 }
+.logo {
+	width: 138px;
+	height: 26px;
+	display: inline-block;
+	text-indent: -2000em;
+	background-position: center center;
+	background-repeat: no-repeat;
+}
+
+
+/*------------------------------------------------------------------------------
+  Globals
+------------------------------------------------------------------------------*/
+
+i.icon-create-message {
+	display: block;
+	width: 32px;
+	height: 26px;
+	display: inline-block;
+	background-position: center center;
+	background-repeat: no-repeat;
+}
+i.icon-carat {
+	width: 17px;
+	height: 14px;
+	display: inline-block;
+	background-position: center center;
+	background-repeat: no-repeat;
+}
+i.icon-search-glass {
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+	background-position: center center;
+	background-repeat: no-repeat;
+}
+.m-avatar {
+	display: inline-block;
+	.border-radius( 4px );
+	overflow: hidden;
+}
+
+
 /*------------------------------------------------------------------------------
   Footer
 ------------------------------------------------------------------------------*/
 
-footer.site-info {}
+footer.site-info {
+
+}

@@ -1,14 +1,14 @@
 {
-    "name": "angular-trial-app",
-    "description": "Trial Angular.js app",
-    "version": "0.0.1",
-    "homepage": "https://github.com/Kevinlearynet/angular-trial-app",
-    "license": "MIT",
-    "private": true,
-    "dependencies": {
-        "angular": "1.2.x",
-        "angular-route": "1.2.x",
-        "angular-loader": "1.2.x",
-        "html5-boilerplate": "~4.3.0"
-    }
+	"name": "angular-trial-app",
+	"description": "Trial Angular.js app",
+	"version": "0.0.1",
+	"homepage": "https://github.com/Kevinlearynet/angular-trial-app",
+	"license": "MIT",
+	"private": true,
+	"dependencies": {
+		"angular": "1.2.x",
+		"angular-route": "1.2.x",
+		"angular-loader": "1.2.x",
+		"html5-boilerplate": "~4.3.0"
+	}
 }

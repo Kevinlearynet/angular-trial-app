@@ -1,20 +1,21 @@
 <header class="navbar">
-    <div class="inner">
+    <div class="container">
         <a href="/" class="logo">Simply Social</a>
-        <a ng-open-modal="createMessage" class="logo">
-            <i class="create-message"></i>
-        </a>
+
         <div class="user-panel">
-            <a class="create"></a>
-            <div class="search">
+            <a ng-open-modal="createMessage" class="user-panel-create">
+	            <i class="icon-create-message"></i>
+	        </a>
+            <div class="user-panel-search">
                 <input type="search" value="">
-                <button class="find">Find</button>
+                <button class="find"><i class="icon-search-glass"></i></button>
             </div>
-            <nav class="dropdown">
+            <nav class="user-panel-dropdown">
                 <a data-toggle="dropdown-menu" class="dropdown-toggle">
                     <span class="m-avatar">
 						<img src="http://www.gravatar.com/avatar/0a9380f35d52fd24ae753a1186878b55.jpg?s=30">
 					</span>
+					<i class="icon-carat"></i>
                 </a>
                 <ul class="dropdown-menu">
                     <li><a href="#/account/profile">Profile</a>
