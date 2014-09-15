@@ -421,7 +421,7 @@ main.posts-layout-grid {
 
 // individual post
 article.post {
-	padding: 25px;
+	padding: 1px;
 	.border-radius( 3px );
 	border: 1px solid #dee1e5;
 	.clearfix();
@@ -429,11 +429,21 @@ article.post {
 	+ article.post {
 		margin-top: 25px;
 	}
-	.avatar {
+	span.avatar {
 		float: left;
+		margin: 25px 0 25px 25px;
+	}
+	figure {
+		margin: 0 -2px -2px -2px;
+		.border-radius( 0 0 3px 3px );
+		overflow: hidden;
+		img {
+			max-width: 100%;
+		}
 	}
 	.post-content {
 		margin: 0 0 0 58px;
+		padding: 25px 25px 25px 20px;
 		> p {
 			margin: 10px 0 0;
 		}

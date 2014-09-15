@@ -543,7 +543,7 @@ main.posts-layout-grid {
   width: 1175px;
 }
 article.post {
-  padding: 25px;
+  padding: 1px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
@@ -562,11 +562,23 @@ article.post:after {
 article.post + article.post {
   margin-top: 25px;
 }
-article.post .avatar {
+article.post span.avatar {
   float: left;
+  margin: 25px 0 25px 25px;
+}
+article.post figure {
+  margin: 0 -2px -2px -2px;
+  -webkit-border-radius: 0 0 3px 3px;
+  -moz-border-radius: 0 0 3px 3px;
+  border-radius: 0 0 3px 3px;
+  overflow: hidden;
+}
+article.post figure img {
+  max-width: 100%;
 }
 article.post .post-content {
   margin: 0 0 0 58px;
+  padding: 25px 25px 25px 20px;
 }
 article.post .post-content > p {
   margin: 10px 0 0;

@@ -64,7 +64,7 @@
 				message: "How to Get Inspired: the Right Way - Designmodo bit.ly/1lE4uJc Good stuff from @designmodo!",
 				time: new Date( 1410432001 * 1000 ),
 				photo: null,
-				video: null,
+				video: '/styles/img/video.jpg',
 				replies: [ {
 					id: 8,
 					user_id: 2,
@@ -87,7 +87,7 @@
 				avatar: "http://img4.wikia.nocookie.net/__cb20130928055404/breakingbad/images/e/e7/BB-S5B-Walt-590.jpg",
 				message: "How to Get Inspired: the Right Way - Designmodo bit.ly/1lE4uJc Good stuff from @designmodo!",
 				time: new Date( 1410432001 * 1000 ),
-				photo: null,
+				photo: '/styles/img/photo.jpg',
 				video: null,
 				replies: [ {
 					id: 11,
