@@ -1,37 +1,46 @@
-<section class="hero">
-	<form ng-controller="AddPostCtrl">
-		<input type="text" placeholder="What's on your mind?">
-		<a ng-click="addPhoto"><i class="icon-photo"></i> Add Photo</a>
-		<a ng-click="addVideo"><i class="icon-video"></i> Add Video</a>
-	</form>
+<div class="posts" ng-controller="post.ListCtrl">
 
-	<nav class="posts-nav">
-		<ul class="posts-filter">
-			<li><a href="/#/home/">All Posts</a></li>
-			<li><a href="/#/home/photos">Photos</a></li>
-			<li><a href="/#/home/videos">Videos</a></li>
-		</ul>
-		<ul class="posts-layout">
-			<li><a ng-click="postsLayout('list')"><i class="icon-list"></i></a></li>
-			<li><a ng-click="postsLayout('grid')"><i class="icon-grid"></i></a></li>
-		<ul>
-	</nav>
-</section>
+	<section class="hero">
+		<form ng-controller="post.AddCtrl" class="posts-add">
+			<input type="text" placeholder="What's on your mind?" ng-model="post.message" on-keyup="createPost()" keys="[13]" value="">
+			<a ng-click="addPhoto" ng-model="post.photo" class="posts-add-action"><i class="icon-photo"></i> Add Photo</a>
+			<a ng-click="addVideo" ng-model="post.video" class="posts-add-action"><i class="icon-video"></i> Add Video</a>
+		</form>
 
-<main ng-controller="PostListCtrl">
-	<article class="post" ng-repeat="post in posts" id="{{id}}">
-		<img class="avatar" alt="{{post.name}}" ng-src="{{post.avatar}}">
-		<div class="post-content">
-			<strong class="full-name">{{post.name}}</strong>
-			<div class="actions">
-				<a ><i class="icon-reply"></i></a>
-				<a ><i class="icon-like"></i></a>
-				<span class="time">{{post.time}}</span>
+		<nav class="posts-nav">
+			<ul class="posts-filter">
+				<li class="active"><a ng-click="postFilter('all')">All Posts</a></li>
+				<li><a ng-click="postFilter('photo')">Photos</a></li>
+				<li><a ng-click="postFilter('video')">Videos</a></li>
+			</ul>
+			<ul class="posts-layout">
+				<li><a ng-click="postsLayout('list')"><i class="icon-list"></i></a></li>
+				<li><a ng-click="postsLayout('grid')"><i class="icon-grid"></i></a></li>
+			</ul>
+		</nav>
+	</section>
+
+	<main role="main" class="posts-list {{layoutClass}}">
+		<article class="post" ng-repeat="post in posts | filter:filters" ng-animate="'slide'" id="{{id}}">
+			<span class="avatar s-avatar">
+				<img class="avatar" alt="{{post.name}}" ng-src="{{post.avatar}}">
+			</span>
+			<div class="post-content">
+				<strong class="full-name">{{post.name}}</strong>
+				<div class="actions">
+					<a ><i class="icon-reply"></i></a>
+					<a ><i class="icon-like"></i></a>
+					<span class="time">{{post.time}}</span>
+				</div>
+				<p>{{post.message}}</p>
+				<figure class="post-photo" ng-if="post.photo">
+					<img ng-src="{{post.photo}}">
+				</figure>
+				<figure class="post-video" ng-if="post.video">
+					<img ng-src="{{post.video}}">
+				</figure>
 			</div>
-			<p>{{post.message}}</p>
-			<figure class="post-photo" ng-if="post.photo">
-				<img ng-src="{{post.photo}}">
-			</figure>
-		</div>
-	</article>
-</main>
+		</article>
+	</main>
+
+</div><!-- // end [ng-controller="PostListCtrl"] -->

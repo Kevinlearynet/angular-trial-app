@@ -1,7 +1,7 @@
 <header class="navbar">
     <div class="container">
 
-        <a href="/" class="logo">{{appName}}</a>
+        <a href="/" class="logo">{{site.name}}</a>
 
         <div class="user-panel">
             <a class="user-panel-create">
@@ -13,8 +13,8 @@
             </div>
             <nav class="user-panel-dropdown">
                 <a data-toggle="dropdown-menu" class="dropdown-toggle">
-                    <span class="m-avatar">
-						<img src="http://www.gravatar.com/avatar/0a9380f35d52fd24ae753a1186878b55.jpg?s=30">
+                    <span class="avatar s-avatar">
+						<img src="{{user.dropdownAvatar}}">
 					</span>
 					<i class="icon-carat"></i>
                 </a>

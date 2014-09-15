@@ -23709,117 +23709,349 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ngRoute' ] );
 	] );
 
 	// root expressions
-	app.run( function ( $rootScope ) {
-		$rootScope.siteName = 'Simply Social';
-		$rootScope.currentYear = new Date().getFullYear();
+	app.run( function ( $rootScope, UserService ) {
+
+		// global variables used on every page in app
+		$rootScope.site = {
+			name: 'Simply Social',
+			currentYear: new Date().getFullYear()
+		};
+
+		// global user data
+		$rootScope.user = UserService.getUser( 1 );
+		$rootScope.user.dropdownAvatar = UserService.getAvatar( $rootScope.user.avatar, 30 );
 	} );
 
 } )( angular, SimplySocial );;/**
- * Post Controllers
+ * Post Controls
  */
 
 "use strict";
 ( function ( angular, app ) {
-	// add a post
-	app.controller( "AddPostCtrl", [ '$scope', 'Post',
-		function ( scope, Post ) {
-			scope.$on( 'posts.update', function ( event ) {
-				scope.posts = Post.posts;
-			} );
-			scope.posts = Post.posts;
-		}
-	] );
-} )( angular, SimplySocial );;/**
- * Post Controllers
- */
 
-"use strict";
-( function ( angular, app ) {
 	// list view
-	app.controller( "PostListCtrl", [ '$scope', 'Post',
-		function ( scope, Post ) {
-			scope.$on( 'posts.update', function ( event ) {
-				scope.posts = Post.posts;
+	app.controller( "post.ListCtrl", [ '$scope', 'PostService',
+		function ( $scope, PostService ) {
+
+			// defaults
+			$scope.filters = {};
+			$scope.layoutClass = 'posts-layout-list';
+
+			// filtering by type: video or image
+			$scope.postFilter = function ( type ) {
+				if ( type == 'video' ) {
+					$scope.filters = {
+						video: '!!'
+					};
+				} else if ( type == 'photo' ) {
+					$scope.filters = {
+						photo: '!!'
+					};
+				} else {
+					$scope.filters = {};
+				}
+			};
+
+			// post layout control
+			$scope.postLayout = function ( style ) {
+				if ( style == 'grid' ) {
+					$scope.layoutClass = 'posts-layout-grid';
+				} else {
+					$scope.layoutClass = 'posts-layout-list';
+				}
+			};
+
+			// build posts list
+			$scope.$on( 'posts.update', function ( event ) {
+				$scope.posts = PostService.posts;
 			} );
-			scope.posts = Post.posts;
+			$scope.posts = PostService.posts;
 		}
 	] );
-} )( angular, SimplySocial );;"use strict";
+
+	// add a post
+	app.controller( "post.AddCtrl", [ '$scope', 'PostService', 'UserService',
+		function ( $scope, PostService, UserService ) {
+
+			$scope.createPost = function () {
+
+				// gather user details (assumes we have a relational data structure)
+				var userID = 1;
+				var user = UserService.getUser( userID );
+				var scaledAvatar = UserService.getAvatar( user.avatar, 40 );
+
+				// setup post
+				var post = {
+					photo: null,
+					video: null,
+					user_id: userID,
+					name: user.name,
+					avatar: scaledAvatar,
+					message: $scope.post.message
+				};
+
+				// validation
+				if ( !post.message.length ) {
+					$scope.errorMessage = "Please enter a message.";
+					return;
+				}
+
+				// create post
+				PostService.createPost( post );
+			};
+
+			// update posts list
+			$scope.$on( 'posts.update', function ( event ) {
+				$scope.posts = PostService.posts;
+			} );
+			$scope.posts = PostService.posts;
+		}
+	] );
+
+} )( angular, SimplySocial );;/**
+ * User Control
+ */
+
+"use strict";
 ( function ( angular, app ) {
-	app.service( 'Post', [ '$rootScope',
+
+	// get user profile data
+	app.controller( "UserProfileDataCtrl", [ '$scope', 'UserService',
+		function ( $scope, UserService ) {
+
+			$scope.user = UserService.user;
+		}
+	] );
+
+} )( angular, SimplySocial );;/**
+ * Post Controls
+ */
+
+"use strict";
+( function ( angular, app ) {
+
+	// enter keyup event
+	app.directive( 'onKeyup', function () {
+		return function ( scope, elm, attrs ) {
+			function applyKeyup() {
+				scope.$apply( attrs.onKeyup );
+			}
+
+			var allowedKeys = scope.$eval( attrs.keys );
+			elm.bind( 'keyup', function ( evt ) {
+				if ( !allowedKeys || allowedKeys.length === 0 ) {
+					applyKeyup();
+				} else {
+					angular.forEach( allowedKeys, function ( key ) {
+						if ( key == evt.which ) {
+							applyKeyup();
+						}
+					} );
+				}
+			} );
+		};
+	} );
+
+} )( angular, SimplySocial );;/**
+ * Post Service
+ *
+ * In production this would probably handle our $.get and $.post
+ * requests to a server-side API backend
+ */
+"use strict";
+( function ( angular, app ) {
+	app.service( 'PostService', [ '$rootScope', 'Utilities',
+		function ( $rootScope, Utilities ) {
+
+			// posts data structure
+			this.posts = [ {
+				id: 1,
+				user_id: 1,
+				name: "Kevin Leary",
+				avatar: "http://www.gravatar.com/avatar/0a9380f35d52fd24ae753a1186878b55.jpg",
+				message: "How to Get Inspired: the Right Way - Designmodo bit.ly/1lE4uJc Good stuff from @designmodo!",
+				time: new Date( 1410432001 * 1000 ),
+				photo: null,
+				video: null,
+				replies: [ {
+					id: 2,
+					user_id: 2,
+					name: "Larry David",
+					avatar: "http://i.telegraph.co.uk/multimedia/archive/02002/Larry_david_2002589b.jpg",
+					message: "Following up on this...",
+					time: new Date( 1410468002 * 1000 ),
+				}, {
+					id: 3,
+					user_id: 3,
+					name: "Walter White",
+					avatar: "http://img4.wikia.nocookie.net/__cb20130928055404/breakingbad/images/e/e7/BB-S5B-Walt-590.jpg",
+					message: "Following up on this...",
+					time: new Date( 1410468002 * 1000 ),
+				} ]
+			}, {
+				id: 4,
+				user_id: 1,
+				name: "Kevin Leary",
+				avatar: "http://www.gravatar.com/avatar/0a9380f35d52fd24ae753a1186878b55.jpg",
+				message: "How to Get Inspired: the Right Way - Designmodo bit.ly/1lE4uJc Good stuff from @designmodo!",
+				time: new Date( 1410432001 * 1000 ),
+				photo: null,
+				video: null,
+				replies: [ {
+					id: 5,
+					user_id: 2,
+					message: "Following up on this...",
+					time: new Date( 1410468002 * 1000 ),
+				}, {
+					id: 6,
+					user_id: 3,
+					name: "Walter White",
+					avatar: "http://img4.wikia.nocookie.net/__cb20130928055404/breakingbad/images/e/e7/BB-S5B-Walt-590.jpg",
+					message: "Following up on this...",
+					time: new Date( 1410468002 * 1000 ),
+				} ]
+			}, {
+				id: 7,
+				user_id: 2,
+				name: "Larry David",
+				avatar: "http://i.telegraph.co.uk/multimedia/archive/02002/Larry_david_2002589b.jpg",
+				message: "How to Get Inspired: the Right Way - Designmodo bit.ly/1lE4uJc Good stuff from @designmodo!",
+				time: new Date( 1410432001 * 1000 ),
+				photo: null,
+				video: null,
+				replies: [ {
+					id: 8,
+					user_id: 2,
+					name: "Larry David",
+					avatar: "http://i.telegraph.co.uk/multimedia/archive/02002/Larry_david_2002589b.jpg",
+					message: "Following up on this...",
+					time: new Date( 1410468002 * 1000 ),
+				}, {
+					id: 9,
+					user_id: 3,
+					name: "Walter White",
+					avatar: "http://img4.wikia.nocookie.net/__cb20130928055404/breakingbad/images/e/e7/BB-S5B-Walt-590.jpg",
+					message: "Following up on this...",
+					time: new Date( 1410468002 * 1000 ),
+				} ]
+			}, {
+				id: 10,
+				user_id: 3,
+				name: "Walter White",
+				avatar: "http://img4.wikia.nocookie.net/__cb20130928055404/breakingbad/images/e/e7/BB-S5B-Walt-590.jpg",
+				message: "How to Get Inspired: the Right Way - Designmodo bit.ly/1lE4uJc Good stuff from @designmodo!",
+				time: new Date( 1410432001 * 1000 ),
+				photo: null,
+				video: null,
+				replies: [ {
+					id: 11,
+					user_id: 2,
+					name: "Larry David",
+					avatar: "http://i.telegraph.co.uk/multimedia/archive/02002/Larry_david_2002589b.jpg",
+					message: "Following up on this...",
+					time: new Date( 1410468002 * 1000 ),
+				}, {
+					id: 12,
+					user_id: 3,
+					name: "Walter White",
+					avatar: "http://img4.wikia.nocookie.net/__cb20130928055404/breakingbad/images/e/e7/BB-S5B-Walt-590.jpg",
+					message: "Following up on this...",
+					time: new Date( 1410468002 * 1000 ),
+				} ]
+			} ];
+
+			// create post
+			this.createPost = function ( post ) {
+
+				var lastPost = this.posts[ this.posts.length - 1 ];
+				var newID = parseInt( lastPost.id, 10 ) + 1; // fudge a unique ID for prototyping purposes
+				var newPost = Utilities.mergeObjs( post, {
+					id: newID,
+					time: new Date(),
+					replies: null,
+				} );
+
+				this.posts.unshift( newPost );
+
+				console.log( 'posts', this.posts );
+
+				$rootScope.$broadcast( 'posts.update' );
+			};
+
+		}
+	] ); // end app.service()
+
+} )( angular, SimplySocial );;/**
+ * User Service
+ *
+ * In production this would probably handle our $.get and $.post
+ * requests to a server-side API backend
+ */
+"use strict";
+( function ( angular, app ) {
+	app.service( 'UserService', [ '$rootScope',
 		function ( $rootScope ) {
 			var service = {
-				posts: [ {
-					id: 1,
-					name: "Sam Soffes",
-					avatar: "http://www.gravatar.com/avatar/0a9380f35d52fd24ae753a1186878b55.jpg?s=30",
-					message: "How to Get Inspired: the Right Way - Designmodo bit.ly/1lE4uJc Good stuff from @designmodo!",
-					time: new Date( 1410432001 * 1000 ),
-					photo: "",
-					video: "",
-					replies: [ {
-						id: 2,
+				users: {
+					1: {
 						name: "Kevin Leary",
-						avatar: "http://www.gravatar.com/avatar/0a9380f35d52fd24ae753a1186878b55.jpg?s=30",
-						message: "Following up on this...",
-						time: new Date( 1410468002 * 1000 ),
-					}, {
-						id: 3,
-						name: "Kevin Leary",
-						avatar: "http://www.gravatar.com/avatar/0a9380f35d52fd24ae753a1186878b55.jpg?s=30",
-						message: "Following up on this...",
-						time: new Date( 1410468002 * 1000 ),
-					} ]
-				}, {
-					id: 1,
-					name: "Sam Soffes",
-					avatar: "http://www.gravatar.com/avatar/0a9380f35d52fd24ae753a1186878b55.jpg?s=30",
-					message: "How to Get Inspired: the Right Way - Designmodo bit.ly/1lE4uJc Good stuff from @designmodo!",
-					time: new Date( 1410432001 * 1000 ),
-					photo: "",
-					video: "",
-					replies: [ {
-						id: 2,
-						name: "Kevin Leary",
-						avatar: "http://www.gravatar.com/avatar/0a9380f35d52fd24ae753a1186878b55.jpg?s=30",
-						message: "Following up on this...",
-						time: new Date( 1410468002 * 1000 ),
-					}, {
-						id: 3,
-						name: "Kevin Leary",
-						avatar: "http://www.gravatar.com/avatar/0a9380f35d52fd24ae753a1186878b55.jpg?s=30",
-						message: "Following up on this...",
-						time: new Date( 1410468002 * 1000 ),
-					} ]
-				}, {
-					id: 1,
-					name: "Sam Soffes",
-					avatar: "http://www.gravatar.com/avatar/0a9380f35d52fd24ae753a1186878b55.jpg?s=30",
-					message: "How to Get Inspired: the Right Way - Designmodo bit.ly/1lE4uJc Good stuff from @designmodo!",
-					time: new Date( 1410432001 * 1000 ),
-					photo: "",
-					video: "",
-					replies: [ {
-						id: 2,
-						name: "Kevin Leary",
-						avatar: "http://www.gravatar.com/avatar/0a9380f35d52fd24ae753a1186878b55.jpg?s=30",
-						message: "Following up on this...",
-						time: new Date( 1410468002 * 1000 ),
-					}, {
-						id: 3,
-						name: "Kevin Leary",
-						avatar: "http://www.gravatar.com/avatar/0a9380f35d52fd24ae753a1186878b55.jpg?s=30",
-						message: "Following up on this...",
-						time: new Date( 1410468002 * 1000 ),
-					} ]
-				} ],
+						desc: "Designer and Developer living in Boston, MA",
+						website: "http://www.kevinleary.net",
+						avatar: "http://www.gravatar.com/avatar/0a9380f35d52fd24ae753a1186878b55.jpg"
+					},
+					2: {
+						name: "Larry David",
+						desc: "Designer and Developer living in Boston, MA",
+						website: "http://www.kevinleary.net",
+						avatar: "http://i.telegraph.co.uk/multimedia/archive/02002/Larry_david_2002589b.jpg"
+					},
+					3: {
+						name: "Walter White",
+						desc: "Mad scientist in Albuquerque, NM",
+						website: "http://www.kevinleary.net",
+						avatar: "http://img4.wikia.nocookie.net/__cb20130928055404/breakingbad/images/e/e7/BB-S5B-Walt-590.jpg"
+					}
+				},
+				getAvatar: function ( url, size ) {
+					var baseUrl = url.replace( /^(https?|ftp):\/\//, '' );
 
-			addPost: function ( post ) {
-					service.posts.push( post );
-					$rootScope.$broadcast( 'posts.update' );
+					// note: would never use a third party service for this in production,
+					// this just made sizing and cropping photos for this demo easy
+					return 'http://i0.wp.com/' + baseUrl + '?resize=' + size + ',' + size;
+				},
+				getUser: function ( id ) {
+
+					// fudged for prototype
+					return this.users[ id ];
 				}
 			};
 			return service;
 		}
 	] );
+} )( angular, SimplySocial );;/**
+ * Utilities & Helper Functions
+ *
+ * Keeping it DRY
+ */
+"use strict";
+( function ( angular, app ) {
+	app.service( 'Utilities', [
+
+		function () {
+
+			var service = {
+
+				// merge objects
+				mergeObjs: function ( obj1, obj2 ) {
+					for ( var attrname in obj2 ) {
+						obj1[ attrname ] = obj2[ attrname ];
+					}
+					return obj1;
+				}
+			};
+
+			return service;
+		}
+	] ); // end app.service()
+
 } )( angular, SimplySocial );

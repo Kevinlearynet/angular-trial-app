@@ -40,9 +40,17 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ngRoute' ] );
 	] );
 
 	// root expressions
-	app.run( function ( $rootScope ) {
-		$rootScope.siteName = 'Simply Social';
-		$rootScope.currentYear = new Date().getFullYear();
+	app.run( function ( $rootScope, UserService ) {
+
+		// global variables used on every page in app
+		$rootScope.site = {
+			name: 'Simply Social',
+			currentYear: new Date().getFullYear()
+		};
+
+		// global user data
+		$rootScope.user = UserService.getUser( 1 );
+		$rootScope.user.dropdownAvatar = UserService.getAvatar( $rootScope.user.avatar, 30 );
 	} );
 
 } )( angular, SimplySocial );
