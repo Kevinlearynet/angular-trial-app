@@ -9,7 +9,7 @@
 @import url('mixins.less');
 @import url('library.less');
 @import url('images.less');
-@import url('directive-modal.less');
+@import url('component-modal.less');
 
 // compiled by grunt-concat-css
 @import url('/scripts/vendor/html5-boilerplate/css/normalize.css');
@@ -222,14 +222,13 @@ header.navbar {
   View: Posts
 ------------------------------------------------------------------------------*/
 
-
 @controls-width: 575px;
 
 // add post form
 form.posts-add {
 	@padding: 30px;
 	background: rgba(0, 178, 134, 0.7);
-	padding: ( @padding + 10px ) @padding @padding;
+	padding: 38px @padding 24px;
 	margin: 0 auto;
 	display: block;
 	.border-radius( 3px );
@@ -237,7 +236,7 @@ form.posts-add {
 	input {
 		animation: blink-empty 1s infinite;
 		border-left: transparent solid 1px;
-		margin: 0 0 38px;
+		margin: 0 0 23px;
 		padding: 0;
 		font-size: 32px;
 		background: transparent;

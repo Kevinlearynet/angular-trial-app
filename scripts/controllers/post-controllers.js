@@ -6,7 +6,7 @@
 ( function ( angular, app ) {
 
 	// list view
-	app.controller( "post.ListCtrl", [ '$scope', 'PostService',
+	app.controller( "post.ListCtrl", [ '$scope', 'PostService', 'ngDialog',
 		function ( $scope, PostService ) {
 
 			// defaults
@@ -45,8 +45,8 @@
 		}
 	] );
 
-	// add a post
-	app.controller( "post.AddCtrl", [ '$scope', 'PostService', 'UserService',
+	// add a post via modal dialog
+	app.controller( "post.CreatePostCtrl", [ '$scope', 'PostService', 'UserService',
 		function ( $scope, PostService, UserService ) {
 
 			$scope.createPost = function () {

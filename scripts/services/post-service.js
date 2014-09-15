@@ -119,8 +119,6 @@
 
 				this.posts.unshift( newPost );
 
-				console.log( 'posts', this.posts );
-
 				$rootScope.$broadcast( 'posts.update' );
 			};
 

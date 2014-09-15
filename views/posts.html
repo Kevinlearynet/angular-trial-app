@@ -1,7 +1,7 @@
 <div class="posts" ng-controller="post.ListCtrl">
 
 	<section class="hero">
-		<form ng-controller="post.AddCtrl" class="posts-add">
+		<form ng-controller="post.CreatePostCtrl" class="posts-add">
 			<input type="text" placeholder="What's on your mind?" ng-model="post.message" on-keyup="createPost()" keys="[13]" value="">
 			<a ng-click="addPhoto" ng-model="post.photo" class="posts-add-action"><i class="icon-photo"></i> Add Photo</a>
 			<a ng-click="addVideo" ng-model="post.video" class="posts-add-action"><i class="icon-video"></i> Add Video</a>

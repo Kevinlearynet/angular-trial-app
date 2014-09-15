@@ -7,12 +7,17 @@ module.exports = function ( grunt ) {
 		concat: {
 			js: {
 				options: {
-					separator: ';'
+					separator: ';',
+					process: function ( src, filepath ) {
+						return '\n\n//############[  ' + filepath + '  ]############\n\n' + src;
+					}
 				},
 				src: [
 					// bower managed vendor libraries
-					'scripts/vendor/**/*.js',
-					'!scripts/vendor/**/*.min.js',
+					'scripts/vendor/angular/angular.js',
+					'scripts/vendor/angular-loader/angular-loader.js',
+					'scripts/vendor/angular-ui-router/release/angular-ui-router.js',
+					'scripts/vendor/ngDialog/js/ngDialog.js',
 
 					// angular app
 					'scripts/app.js',
