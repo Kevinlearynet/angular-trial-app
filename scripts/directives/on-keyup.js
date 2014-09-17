@@ -7,12 +7,12 @@
 
 	// enter keyup event
 	app.directive( 'onKeyup', function () {
-		return function ( scope, elm, attrs ) {
+		return function ( $scope, elm, attrs ) {
 			function applyKeyup() {
-				scope.$apply( attrs.onKeyup );
+				$scope.$apply( attrs.onKeyup );
 			}
 
-			var allowedKeys = scope.$eval( attrs.keys );
+			var allowedKeys = $scope.$eval( attrs.keys );
 			elm.bind( 'keyup', function ( evt ) {
 				if ( !allowedKeys || allowedKeys.length === 0 ) {
 					applyKeyup();

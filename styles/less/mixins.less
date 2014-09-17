@@ -17,16 +17,32 @@
 	-ms-filter: ~"progid:DXImageTransform.Microsoft.Alpha(opacity=@{opperc})";
 	filter: ~"alpha(opacity=@{opperc})";
 }
-.transition(@duration:0.2s, @ease:ease-out) {
-	-webkit-transition: all @duration @ease;
-	-moz-transition: all @duration @ease;
-	-o-transition: all @duration @ease;
-	transition: all @duration @ease;
+.transition( @arguments ) {
+	-moz-transition: @arguments;
+	-webkit-transition: @arguments;
+	-o-transition: @arguments;
+	-ms-transition: @arguments;
+	transition: @arguments;
+}
+.animation(@name, @duration: 300ms, @delay: 0, @ease: ease) {
+	-webkit-animation: @name @duration @delay @ease;
+	-moz-animation:    @name @duration @delay @ease;
+	-ms-animation:     @name @duration @delay @ease;
 }
 .box-shadow(@arguments) {
 	-webkit-box-shadow: @arguments;
 	-moz-box-shadow: @arguments;
 	box-shadow: @arguments;
+}
+.blur( @arguments ) {
+	-webkit-filter: blur(@arguments);
+	-moz-filter: blur(@arguments);
+	filter: blur(@arguments);
+}
+.transform(@arguments) {
+	-webkit-transform: translateY(@arguments);
+	-ms-transform: translateY(@arguments);
+	transform: translateY(@arguments);
 }
 .columns(@colwidth: 250px, @colcount: 0, @colgap: 50px, @columnRuleColor: #EEE, @columnRuleStyle: solid, @columnRuleWidth: 1px) {
 	-moz-column-width: @colwidth;

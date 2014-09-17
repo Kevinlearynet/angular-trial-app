@@ -53,8 +53,16 @@
 
 				// gather user details (assumes we have a relational data structure)
 				var userID = 1;
-				var user = UserService.getUser( userID );
-				var scaledAvatar = UserService.getAvatar( user.avatar, 40 );
+				var user = $scope.user;
+				var scaledAvatar = user.avatar.md;
+
+				console.log( $scope );
+
+				// validation
+				if ( $scope.post === undefined || $scope.post.message === undefined ) {
+					$scope.errorMessage = "Please enter a message.";
+					return;
+				}
 
 				// setup post
 				var post = {
@@ -65,15 +73,18 @@
 					avatar: scaledAvatar,
 					message: $scope.post.message
 				};
-
-				// validation
-				if ( !post.message.length ) {
-					$scope.errorMessage = "Please enter a message.";
-					return;
-				}
+				console.log( post );
 
 				// create post
 				PostService.createPost( post );
+
+				// close modal if exists
+				if ( typeof $scope.$parent.closeThisDialog === 'function' )
+					$scope.$parent.closeThisDialog();
+
+				// clear controller
+				$scope.post.message = '';
+				$scope.currentRecord = {};
 			};
 
 			// update posts list
