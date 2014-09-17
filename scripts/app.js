@@ -39,9 +39,13 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog' ] )
 			$stateProvider.state( "posts.create", {
 				url: "/create",
 				onEnter: function ( $stateParams, $state, ngDialog ) {
-					ngDialog.open( {
+					var dialog = ngDialog.open( {
 						template: '/views/_modal-create-post.html',
+						className: 'ngdialog-create-post',
 						controller: 'post.CreatePostCtrl'
+					} );
+					dialog.closePromise.then( function ( data ) {
+						$state.go( 'posts' );
 					} );
 				}
 			} );
