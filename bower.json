@@ -10,6 +10,7 @@
 		"angular-ui-router": "0.2.x",
 		"angular-loader": "1.2.x",
 		"html5-boilerplate": "~4.3.0",
-		"CSS-Filters-Polyfill": "0.3.2"
+		"CSS-Filters-Polyfill": "0.3.2",
+		"moment": "2.8.x"
 	}
 }

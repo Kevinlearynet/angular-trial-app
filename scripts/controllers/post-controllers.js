@@ -6,14 +6,18 @@
 ( function ( angular, app ) {
 
 	// list view
-	app.controller( "post.ListCtrl", [ '$scope', 'PostService', 'ngDialog',
-		function ( $scope, PostService ) {
+	app.controller( "post.ListCtrl", [ '$scope', 'PostService', 'UserService', 'ngDialog',
+		function ( $scope, PostService, UserService ) {
 
 			// defaults
 			$scope.filters = {};
 			$scope.layoutClass = 'posts-layout-list';
 
-			// filtering by type: video or image
+			/**
+			 * Post Filtering
+			 *
+			 * Filtering by type: video or image
+			 */
 			$scope.postFilter = function ( type ) {
 				if ( type == 'video' ) {
 					$scope.filters = {
@@ -28,14 +32,35 @@
 				}
 			};
 
-			// post layout control
+			/**
+			 * Layout Control Actions
+			 */
 			$scope.postLayout = function ( style ) {
 				if ( style == 'grid' ) {
-					$scope.layoutClass = 'posts-layout-grid';
+					$scope.layoutStyle = 'grid';
 				} else {
-					$scope.layoutClass = 'posts-layout-list';
+					$scope.layoutStyle = 'list';
 				}
+				$scope.layoutClass = 'posts-layout-' + $scope.layoutStyle;
 			};
+
+			/**
+			 * Layout Actives Classes
+			 */
+			$scope.isActive = function ( style ) {
+				return style === $scope.layoutStyle;
+			};
+
+			/**
+			 * Format Avatar
+			 */
+			$scope.formatAvatar = function ( src, size ) {
+				var avatar = UserService.getAvatar( src, size );
+				return avatar;
+			};
+
+			// default layout style
+			$scope.postLayout( 'list' );
 
 			// build posts list
 			$scope.$on( 'posts.update', function ( event ) {
@@ -49,6 +74,9 @@
 	app.controller( "post.CreatePostCtrl", [ '$scope', 'PostService', 'UserService',
 		function ( $scope, PostService, UserService ) {
 
+			/**
+			 * Create Post
+			 */
 			$scope.createPost = function () {
 
 				// gather user details (assumes we have a relational data structure)
@@ -92,6 +120,7 @@
 				$scope.posts = PostService.posts;
 			} );
 			$scope.posts = PostService.posts;
+
 		}
 	] );
 

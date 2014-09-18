@@ -18,6 +18,7 @@ module.exports = function ( grunt ) {
 					'scripts/vendor/angular-loader/angular-loader.js',
 					'scripts/vendor/angular-ui-router/release/angular-ui-router.js',
 					'scripts/vendor/ngDialog/js/ngDialog.js',
+					'scripts/vendor/moment/moment.js',
 
 					// angular app
 					'scripts/app.js',
