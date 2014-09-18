@@ -648,6 +648,7 @@ article.post-primary + article.post-primary {
 }
 article.post-reply {
   border-bottom: 1px solid #dee1e5;
+  position: relative;
 }
 form.post-reply-form {
   background: #f9fafb;

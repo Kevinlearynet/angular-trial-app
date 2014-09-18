@@ -9,9 +9,9 @@
 ( function ( angular, app ) {
 
 	// get user profile data
-	app.controller( "AppCtrl", [ '$rootScope', '$scope', '$state',
+	app.controller( "AppCtrl", [ '$rootScope', '$scope', '$state', 'UserService',
 
-		function ( $rootScope, $scope, $state ) {
+		function ( $rootScope, $scope, $state, UserService ) {
 
 			//
 			// bodyClass definitions
@@ -27,6 +27,14 @@
 					$scope.bodyClass = 'state-' + currentState;
 				}
 			);
+
+			/**
+			 * Format Avatar
+			 */
+			$scope.formatAvatar = function ( src, size ) {
+				var avatar = UserService.getAvatar( src, size );
+				return avatar;
+			};
 		}
 	] );
 

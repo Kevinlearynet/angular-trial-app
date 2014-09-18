@@ -29343,9 +29343,9 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog' ] )
 ( function ( angular, app ) {
 
 	// get user profile data
-	app.controller( "AppCtrl", [ '$rootScope', '$scope', '$state',
+	app.controller( "AppCtrl", [ '$rootScope', '$scope', '$state', 'UserService',
 
-		function ( $rootScope, $scope, $state ) {
+		function ( $rootScope, $scope, $state, UserService ) {
 
 			//
 			// bodyClass definitions
@@ -29361,6 +29361,14 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog' ] )
 					$scope.bodyClass = 'state-' + currentState;
 				}
 			);
+
+			/**
+			 * Format Avatar
+			 */
+			$scope.formatAvatar = function ( src, size ) {
+				var avatar = UserService.getAvatar( src, size );
+				return avatar;
+			};
 		}
 	] );
 
@@ -30077,6 +30085,90 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog' ] )
 				avatar: "http://i.telegraph.co.uk/multimedia/archive/02002/Larry_david_2002589b.jpg",
 				message: "How to Get Inspired: the Right Way - Designmodo bit.ly/1lE4uJc Good stuff from @designmodo!",
 				time: new Date( "September 17, 2014 11:45:00" ).toString(),
+				video: null,
+				photo: '/styles/img/photo.jpg',
+				replies: [ {
+					user_id: 2,
+					name: "Larry David",
+					avatar: "http://i.telegraph.co.uk/multimedia/archive/02002/Larry_david_2002589b.jpg",
+					message: "Following up on this...",
+					time: new Date( "September 17, 2014 11:45:00" ).toString()
+				}, {
+					user_id: 3,
+					name: "Walter White",
+					avatar: "http://img4.wikia.nocookie.net/__cb20130928055404/breakingbad/images/e/e7/BB-S5B-Walt-590.jpg",
+					message: "Following up on this...",
+					time: new Date( "September 17, 2014 11:45:00" ).toString(),
+				} ]
+			}, {
+				user_id: 1,
+				name: "Kevin Leary",
+				avatar: "http://www.gravatar.com/avatar/0a9380f35d52fd24ae753a1186878b55.jpg",
+				message: "How to Get Inspired: the Right Way - Designmodo bit.ly/1lE4uJc Good stuff from @designmodo!",
+				time: new Date( "September 17, 2014 11:45:00" ).toString(),
+				photo: null,
+				video: null,
+				replies: [ {
+					user_id: 2,
+					name: "Larry David",
+					avatar: "http://i.telegraph.co.uk/multimedia/archive/02002/Larry_david_2002589b.jpg",
+					message: "Following up on this...",
+					time: new Date( "September 17, 2014 11:45:00" ).toString()
+				}, {
+					user_id: 3,
+					name: "Walter White",
+					avatar: "http://img4.wikia.nocookie.net/__cb20130928055404/breakingbad/images/e/e7/BB-S5B-Walt-590.jpg",
+					message: "Following up on this...",
+					time: new Date( "September 17, 2014 11:45:00" ).toString(),
+				} ]
+			}, {
+				user_id: 2,
+				name: "Larry David",
+				avatar: "http://i.telegraph.co.uk/multimedia/archive/02002/Larry_david_2002589b.jpg",
+				message: "How to Get Inspired: the Right Way - Designmodo bit.ly/1lE4uJc Good stuff from @designmodo!",
+				time: new Date( "September 17, 2014 11:45:00" ).toString(),
+				photo: null,
+				video: '/styles/img/video.jpg',
+				replies: [ {
+					user_id: 2,
+					name: "Larry David",
+					avatar: "http://i.telegraph.co.uk/multimedia/archive/02002/Larry_david_2002589b.jpg",
+					message: "Following up on this...",
+					time: new Date( "September 17, 2014 11:45:00" ).toString()
+				}, {
+					user_id: 3,
+					name: "Walter White",
+					avatar: "http://img4.wikia.nocookie.net/__cb20130928055404/breakingbad/images/e/e7/BB-S5B-Walt-590.jpg",
+					message: "Following up on this...",
+					time: new Date( "September 17, 2014 11:45:00" ).toString(),
+				} ]
+			}, {
+				user_id: 1,
+				name: "Kevin Leary",
+				avatar: "http://www.gravatar.com/avatar/0a9380f35d52fd24ae753a1186878b55.jpg",
+				message: "How to Get Inspired: the Right Way - Designmodo bit.ly/1lE4uJc Good stuff from @designmodo!",
+				time: new Date( "September 17, 2014 11:45:00" ).toString(),
+				photo: null,
+				video: null,
+				replies: [ {
+					user_id: 2,
+					name: "Larry David",
+					avatar: "http://i.telegraph.co.uk/multimedia/archive/02002/Larry_david_2002589b.jpg",
+					message: "Following up on this...",
+					time: new Date( "September 17, 2014 11:45:00" ).toString()
+				}, {
+					user_id: 3,
+					name: "Walter White",
+					avatar: "http://img4.wikia.nocookie.net/__cb20130928055404/breakingbad/images/e/e7/BB-S5B-Walt-590.jpg",
+					message: "Following up on this...",
+					time: new Date( "September 17, 2014 11:45:00" ).toString(),
+				} ]
+			}, {
+				user_id: 2,
+				name: "Larry David",
+				avatar: "http://i.telegraph.co.uk/multimedia/archive/02002/Larry_david_2002589b.jpg",
+				message: "How to Get Inspired: the Right Way - Designmodo bit.ly/1lE4uJc Good stuff from @designmodo!",
+				time: new Date( "September 17, 2014 11:45:00" ).toString(),
 				photo: null,
 				video: '/styles/img/video.jpg',
 				replies: [ {
@@ -30135,7 +30227,7 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog' ] )
 			};
 
 			// add reply to post
-		this.createReply = function ( reply, parent ) {
+			this.createReply = function ( reply, parent ) {
 
 				// add to top of data structure (just for demonstration purposes)
 				var newReply = Utilities.mergeObjs( reply, {
