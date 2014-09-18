@@ -51,6 +51,16 @@ form.posts-add {
 	:-moz-placeholder { color: @placeholder-text-fallback; color: @placeholder-text; }
 	::-moz-placeholder { color: @placeholder-text-fallback; color: @placeholder-text; }
 	:-ms-input-placeholder { color: @placeholder-text-fallback; color: @placeholder-text; }
+
+	// validation errors
+	&.error {
+		@placeholder-text-fallback: #acd739;
+		@placeholder-text: rgba(255,242,0, 0.7);
+		::-webkit-input-placeholder { color: @placeholder-text-fallback; color: @placeholder-text; }
+		:-moz-placeholder { color: @placeholder-text-fallback; color: @placeholder-text; }
+		::-moz-placeholder { color: @placeholder-text-fallback; color: @placeholder-text; }
+		:-ms-input-placeholder { color: @placeholder-text-fallback; color: @placeholder-text; }
+	}
 }
 @keyframes blink-empty {
 	50% { border-left: 1px solid #fff; }
@@ -153,18 +163,31 @@ main.posts-layout-grid {
 	.container {
 		width: 1175px;
 	}
+	.container {
+		@column-count: 3;
+		@column-gap: 25px;
+		margin-bottom: -50px;
+		.column-count( @column-count );
+		.column-gap( @column-gap );
+	}
+	article.post {
+		margin: 0 0 25px;
+		padding: 0;
+		width: 100%;
+		display: inline-block;
+		border: none;
+		+ article {
+			margin-top: 0;
+		}
+	}
 }
 
 // individual post
 article.post {
-	padding: 1px;
-	.border-radius( 3px );
-	border: 1px solid #dee1e5;
-	position: relative;
-	.clearfix();
-
-	+ article.post {
-		margin-top: 25px;
+	.post-inner {
+		padding: 1px;
+		position: relative;
+		.clearfix();
 	}
 	span.avatar {
 		float: left;
@@ -179,7 +202,7 @@ article.post {
 		}
 	}
 	.post-content {
-		margin: 0 0 0 58px;
+		margin: 0 0 0 65px;
 		padding: 25px 25px 25px 20px;
 		> p {
 			margin: 10px 0 0;
@@ -209,24 +232,36 @@ article.post {
 			&:hover, &:hover i { .opacity( 0.65 ); }
 		}
 	}
+}
 
-	// angular animations
-	.animate-enter,
-	.animate-leave {
-		.transition( 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all );
-		position: relative;
+// post: top-level/primary
+article.post-primary {
+	.post-inner {
+		.border-radius( 3px );
+		border: 1px solid #dee1e5;
+	}
+	+ article.post-primary {
+		margin-top: 25px;
+	}
+}
+
+// post: reply
+article.post-reply {
+	border-bottom: 1px solid #dee1e5;
+}
+
+// post: reply input
+form.post-reply-form {
+	background: #f9fafb;
+	padding: 25px;
+	.border-radius( 0 0 3px 3px );
+	input {
 		display: block;
-	}
-	.animate-enter.animate-enter-active,
-	.animate-leave {
-		opacity: 1;
-		top: 0;
-		height: 30px;
-	}
-	.animate-leave.animate-leave-active,
-	.animate-enter {
-		opacity: 0;
-		top: -50px;
-		height: 0px;
+		border: 1px solid #dee1e5;
+		.border-radius( 3px );
+		width: 100%;
+		color: @link;
+		text-indent: 14px;
+		padding: 8px 0 7px;
 	}
 }

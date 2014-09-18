@@ -19,11 +19,7 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog' ] )
 
 		// global user data
 		$rootScope.user = UserService.getUser( 1 );
-		$rootScope.user.avatar = {
-			sm: UserService.getAvatar( $rootScope.user.avatar, 30 ),
-			md: UserService.getAvatar( $rootScope.user.avatar, 40 ),
-			lg: UserService.getAvatar( $rootScope.user.avatar, 50 )
-		};
+		$rootScope.user.avatar = $rootScope.user.avatar;
 
 		// global state references
 		$rootScope.$state = $state;
@@ -50,9 +46,25 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog' ] )
 				url: "/create",
 				onEnter: function ( $stateParams, $state, ngDialog ) {
 					var dialog = ngDialog.open( {
-						template: '/views/_modal-create-post.html',
+						template: '/views/_modal-posts.create.html',
 						className: 'ngdialog-create-post',
 						controller: 'post.CreatePostCtrl'
+					} );
+					dialog.closePromise.then( function ( data ) {
+						$state.go( 'posts' );
+					} );
+				}
+			} );
+
+			// post detail post
+			$stateProvider.state( {
+				name: 'posts.detail',
+				url: "/:id",
+				onEnter: function ( $stateParams, $state, ngDialog ) {
+					var dialog = ngDialog.open( {
+						template: '/views/_modal-posts.detail.html',
+						className: 'ngdialog-post-detail',
+						controller: 'post.DetailCtrl'
 					} );
 					dialog.closePromise.then( function ( data ) {
 						$state.go( 'posts' );

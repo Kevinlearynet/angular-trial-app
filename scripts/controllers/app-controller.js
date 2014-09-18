@@ -23,7 +23,6 @@
 			// current state
 			$rootScope.$on( '$stateChangeStart',
 				function ( event, toState, toParams, fromState, fromParams ) {
-					console.log( 'toState', toState );
 					var currentState = toState.name.replace( '.', '-' );
 					$scope.bodyClass = 'state-' + currentState;
 				}

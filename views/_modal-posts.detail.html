@@ -1,0 +1,28 @@
+<figure class="post-media" ng-if="post.photo">
+	<img ng-src="{{post.photo}}">
+</figure>
+
+<figure class="post-media" ng-if="post.video">
+	<img ng-src="{{post.video}}">
+</figure>
+
+<div class="post-replies">
+	<article class="post post-reply" ng-repeat="(id, reply) in replies" id="{{id}}">
+		<span class="avatar m-avatar">
+			<img ng-src="{{ formatAvatar(reply.avatar, 40) }}" alt="{{reply.name}}" class="avatar">
+		</span>
+		<div class="post-content">
+			<strong class="full-name">{{reply.name}}</strong>
+			<p>{{reply.message}}</p>
+		</div>
+		<div class="post-actions">
+			<a ng-click=""><i class="icon-reply"></i></a>
+			<a ng-click=""><i class="icon-like"></i></a>
+			<span timeago="{{reply.time}}" class="time" />
+		</div>
+	</article>
+</div>
+
+<form class="post-reply-form">
+	<input type="text" ng-model="reply.message" placeholder="Reply" ng-enter="createReply()" value="{{reply.message}}" />
+</form>

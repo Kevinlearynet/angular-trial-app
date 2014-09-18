@@ -27,7 +27,7 @@
 	// <span>{{someDate | timeago}}</span>
 	app.filter( 'timeago', function () {
 		return function ( date ) {
-			return moment( date ).fromNow();
+			return moment( new Date( date ) ).fromNow();
 		};
 	} );
 
@@ -37,7 +37,7 @@
 			restrict: 'A',
 			link: function ( scope, element, attrs ) {
 				attrs.$observe( "timeago", function () {
-					element.text( moment( attrs.timeago ).fromNow() );
+					element.text( moment( new Date( attrs.timeago ) ).fromNow() );
 				} );
 			}
 		};

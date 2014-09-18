@@ -29272,11 +29272,7 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog' ] )
 
 		// global user data
 		$rootScope.user = UserService.getUser( 1 );
-		$rootScope.user.avatar = {
-			sm: UserService.getAvatar( $rootScope.user.avatar, 30 ),
-			md: UserService.getAvatar( $rootScope.user.avatar, 40 ),
-			lg: UserService.getAvatar( $rootScope.user.avatar, 50 )
-		};
+		$rootScope.user.avatar = $rootScope.user.avatar;
 
 		// global state references
 		$rootScope.$state = $state;
@@ -29303,9 +29299,25 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog' ] )
 				url: "/create",
 				onEnter: function ( $stateParams, $state, ngDialog ) {
 					var dialog = ngDialog.open( {
-						template: '/views/_modal-create-post.html',
+						template: '/views/_modal-posts.create.html',
 						className: 'ngdialog-create-post',
 						controller: 'post.CreatePostCtrl'
+					} );
+					dialog.closePromise.then( function ( data ) {
+						$state.go( 'posts' );
+					} );
+				}
+			} );
+
+			// post detail post
+			$stateProvider.state( {
+				name: 'posts.detail',
+				url: "/:id",
+				onEnter: function ( $stateParams, $state, ngDialog ) {
+					var dialog = ngDialog.open( {
+						template: '/views/_modal-posts.detail.html',
+						className: 'ngdialog-post-detail',
+						controller: 'post.DetailCtrl'
 					} );
 					dialog.closePromise.then( function ( data ) {
 						$state.go( 'posts' );
@@ -29345,7 +29357,6 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog' ] )
 			// current state
 			$rootScope.$on( '$stateChangeStart',
 				function ( event, toState, toParams, fromState, fromParams ) {
-					console.log( 'toState', toState );
 					var currentState = toState.name.replace( '.', '-' );
 					$scope.bodyClass = 'state-' + currentState;
 				}
@@ -29364,13 +29375,84 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog' ] )
 "use strict";
 ( function ( angular, app ) {
 
+	// detail view
+	app.controller( "post.DetailCtrl", [ '$scope', '$state', '$stateParams', 'PostService', 'UserService', 'ngDialog',
+		function ( $scope, $state, $stateParams, PostService, UserService ) {
+
+			$scope.post = PostService.getPost( $stateParams.id );
+			$scope.replies = PostService.getPostReplies( $stateParams.id );
+
+			/**
+			 * Create Reply
+			 */
+			$scope.createReply = function () {
+
+				// gather user details (assumes we have a relational data structure)
+				var user = $scope.user;
+
+				// validation
+				if ( $scope.reply === undefined || $scope.reply.message === undefined || !$scope.reply.message ) {
+					$scope.messageError = true;
+					return;
+				}
+
+				// setup post
+				var reply = {
+					user_id: user.id,
+					name: user.name,
+					avatar: user.avatar,
+					message: $scope.reply.message
+				};
+
+				// create post
+				PostService.createReply( reply, $scope.post );
+
+				// close modal if exists
+				if ( typeof $scope.$parent.closeThisDialog === 'function' )
+					$scope.$parent.closeThisDialog();
+
+				// clear controller
+				$scope.messageError = false;
+				$scope.reply.message = '';
+				$scope.currentRecord = {};
+			};
+
+			/**
+			 * Validation
+			 */
+			$scope.validate = function () {
+				$scope.messageError = true;
+			};
+
+			/**
+			 * Format Avatar
+			 *
+			 * It's not good that we have a diplicate method accross
+			 * controllers here, given more time I would explore
+			 * creating a reliable directive for handling this
+			 * directly through the service
+			 */
+			$scope.formatAvatar = function ( src, size ) {
+				var avatar = UserService.getAvatar( src, size );
+				return avatar;
+			};
+
+			// update posts list
+			$scope.$on( 'posts.update', function ( event ) {
+				$scope.posts = PostService.posts;
+			} );
+			$scope.posts = PostService.posts;
+
+		}
+	] );
+
 	// list view
 	app.controller( "post.ListCtrl", [ '$scope', 'PostService', 'UserService', 'ngDialog',
 		function ( $scope, PostService, UserService ) {
 
 			// defaults
-			$scope.filters = {};
 			$scope.layoutClass = 'posts-layout-list';
+			$scope.postFilterType = 'all';
 
 			/**
 			 * Post Filtering
@@ -29378,17 +29460,28 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog' ] )
 			 * Filtering by type: video or image
 			 */
 			$scope.postFilter = function ( type ) {
-				if ( type == 'video' ) {
-					$scope.filters = {
-						video: '!!'
-					};
-				} else if ( type == 'photo' ) {
-					$scope.filters = {
-						photo: '!!'
-					};
-				} else {
-					$scope.filters = {};
-				}
+				$scope.postFilterType = type;
+			};
+
+			/**
+			 * Filtering for objects
+			 *
+			 * Angular filters can only handle arrays out of the box
+			 * extend it to provide key/value object filtering
+			 */
+			$scope.filterProp = function ( items ) {
+
+				// no filter if not provided
+				if ( $scope.postFilterType === 'all' || $scope.postFilterType === undefined )
+					return items;
+
+				var result = {};
+				angular.forEach( items, function ( value, key ) {
+					if ( value[ $scope.postFilterType ] !== null ) {
+						result[ key ] = value;
+					}
+				} );
+				return result;
 			};
 
 			/**
@@ -29406,8 +29499,15 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog' ] )
 			/**
 			 * Layout Actives Classes
 			 */
-			$scope.isActive = function ( style ) {
+			$scope.isActiveLayout = function ( style ) {
 				return style === $scope.layoutStyle;
+			};
+
+			/**
+			 * Filter Actives Classes
+			 */
+			$scope.isActiveFilter = function ( type ) {
+				return type === $scope.postFilterType;
 			};
 
 			/**
@@ -29439,15 +29539,11 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog' ] )
 			$scope.createPost = function () {
 
 				// gather user details (assumes we have a relational data structure)
-				var userID = 1;
 				var user = $scope.user;
-				var scaledAvatar = user.avatar.md;
-
-				console.log( $scope );
 
 				// validation
-				if ( $scope.post === undefined || $scope.post.message === undefined ) {
-					$scope.errorMessage = "Please enter a message.";
+				if ( $scope.post === undefined || $scope.post.message === undefined || !$scope.post.message ) {
+					$scope.messageError = true;
 					return;
 				}
 
@@ -29455,12 +29551,11 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog' ] )
 				var post = {
 					photo: null,
 					video: null,
-					user_id: userID,
+					user_id: user.id,
 					name: user.name,
-					avatar: scaledAvatar,
+					avatar: user.avatar,
 					message: $scope.post.message
 				};
-				console.log( post );
 
 				// create post
 				PostService.createPost( post );
@@ -29470,8 +29565,16 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog' ] )
 					$scope.$parent.closeThisDialog();
 
 				// clear controller
+				$scope.messageError = false;
 				$scope.post.message = '';
 				$scope.currentRecord = {};
+			};
+
+			/**
+			 * Validation
+			 */
+			$scope.validate = function () {
+				$scope.messageError = true;
 			};
 
 			// update posts list
@@ -29479,7 +29582,6 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog' ] )
 				$scope.posts = PostService.posts;
 			} );
 			$scope.posts = PostService.posts;
-
 		}
 	] );
 
@@ -29833,7 +29935,7 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog' ] )
 
 } )( window, window.angular );;
 
-//############[  scripts/directives/on-keyup.js  ]############
+//############[  scripts/directives/ng-enter.js  ]############
 
 /**
  * Post Controls
@@ -29842,23 +29944,15 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog' ] )
 "use strict";
 ( function ( angular, app ) {
 
-	// enter keyup event
-	app.directive( 'onKeyup', function () {
-		return function ( $scope, elm, attrs ) {
-			function applyKeyup() {
-				$scope.$apply( attrs.onKeyup );
-			}
-
-			var allowedKeys = $scope.$eval( attrs.keys );
-			elm.bind( 'keyup', function ( evt ) {
-				if ( !allowedKeys || allowedKeys.length === 0 ) {
-					applyKeyup();
-				} else {
-					angular.forEach( allowedKeys, function ( key ) {
-						if ( key == evt.which ) {
-							applyKeyup();
-						}
+	app.directive( 'ngEnter', function () {
+		return function ( scope, element, attrs ) {
+			element.bind( "keydown keypress", function ( event ) {
+				if ( event.which === 13 ) {
+					scope.$apply( function () {
+						scope.$eval( attrs.ngEnter );
 					} );
+
+					event.preventDefault();
 				}
 			} );
 		};
@@ -29897,7 +29991,7 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog' ] )
 	// <span>{{someDate | timeago}}</span>
 	app.filter( 'timeago', function () {
 		return function ( date ) {
-			return moment( date ).fromNow();
+			return moment( new Date( date ) ).fromNow();
 		};
 	} );
 
@@ -29907,7 +30001,7 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog' ] )
 			restrict: 'A',
 			link: function ( scope, element, attrs ) {
 				attrs.$observe( "timeago", function () {
-					element.text( moment( attrs.timeago ).fromNow() );
+					element.text( moment( new Date( attrs.timeago ) ).fromNow() );
 				} );
 			}
 		};
@@ -29936,7 +30030,6 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog' ] )
 			// in a relational manner
 			//
 			this.posts = [ {
-				id: 1,
 				user_id: 1,
 				name: "Kevin Leary",
 				avatar: "http://www.gravatar.com/avatar/0a9380f35d52fd24ae753a1186878b55.jpg",
@@ -29945,14 +30038,12 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog' ] )
 				photo: null,
 				video: null,
 				replies: [ {
-					id: 2,
 					user_id: 2,
 					name: "Larry David",
 					avatar: "http://i.telegraph.co.uk/multimedia/archive/02002/Larry_david_2002589b.jpg",
 					message: "Following up on this...",
-					time: new Date( "September 17, 2014 11:45:00" ).toString(),
+					time: new Date( "September 17, 2014 11:45:00" ).toString()
 				}, {
-					id: 3,
 					user_id: 3,
 					name: "Walter White",
 					avatar: "http://img4.wikia.nocookie.net/__cb20130928055404/breakingbad/images/e/e7/BB-S5B-Walt-590.jpg",
@@ -29960,7 +30051,6 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog' ] )
 					time: new Date( "September 17, 2014 11:45:00" ).toString(),
 				} ]
 			}, {
-				id: 4,
 				user_id: 1,
 				name: "Kevin Leary",
 				avatar: "http://www.gravatar.com/avatar/0a9380f35d52fd24ae753a1186878b55.jpg",
@@ -29969,12 +30059,12 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog' ] )
 				photo: null,
 				video: null,
 				replies: [ {
-					id: 5,
 					user_id: 2,
+					name: "Larry David",
+					avatar: "http://i.telegraph.co.uk/multimedia/archive/02002/Larry_david_2002589b.jpg",
 					message: "Following up on this...",
-					time: new Date( "September 17, 2014 11:45:00" ).toString(),
+					time: new Date( "September 17, 2014 11:45:00" ).toString()
 				}, {
-					id: 6,
 					user_id: 3,
 					name: "Walter White",
 					avatar: "http://img4.wikia.nocookie.net/__cb20130928055404/breakingbad/images/e/e7/BB-S5B-Walt-590.jpg",
@@ -29982,7 +30072,6 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog' ] )
 					time: new Date( "September 17, 2014 11:45:00" ).toString(),
 				} ]
 			}, {
-				id: 7,
 				user_id: 2,
 				name: "Larry David",
 				avatar: "http://i.telegraph.co.uk/multimedia/archive/02002/Larry_david_2002589b.jpg",
@@ -29991,14 +30080,12 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog' ] )
 				photo: null,
 				video: '/styles/img/video.jpg',
 				replies: [ {
-					id: 8,
 					user_id: 2,
 					name: "Larry David",
 					avatar: "http://i.telegraph.co.uk/multimedia/archive/02002/Larry_david_2002589b.jpg",
 					message: "Following up on this...",
-					time: new Date( "September 17, 2014 11:45:00" ).toString(),
+					time: new Date( "September 17, 2014 11:45:00" ).toString()
 				}, {
-					id: 9,
 					user_id: 3,
 					name: "Walter White",
 					avatar: "http://img4.wikia.nocookie.net/__cb20130928055404/breakingbad/images/e/e7/BB-S5B-Walt-590.jpg",
@@ -30006,7 +30093,6 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog' ] )
 					time: new Date( "September 17, 2014 11:45:00" ).toString(),
 				} ]
 			}, {
-				id: 10,
 				user_id: 3,
 				name: "Walter White",
 				avatar: "http://img4.wikia.nocookie.net/__cb20130928055404/breakingbad/images/e/e7/BB-S5B-Walt-590.jpg",
@@ -30015,14 +30101,12 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog' ] )
 				photo: '/styles/img/photo.jpg',
 				video: null,
 				replies: [ {
-					id: 11,
 					user_id: 2,
 					name: "Larry David",
 					avatar: "http://i.telegraph.co.uk/multimedia/archive/02002/Larry_david_2002589b.jpg",
 					message: "Following up on this...",
-					time: new Date( "September 17, 2014 11:45:00" ).toString(),
+					time: new Date( "September 17, 2014 11:45:00" ).toString()
 				}, {
-					id: 12,
 					user_id: 3,
 					name: "Walter White",
 					avatar: "http://img4.wikia.nocookie.net/__cb20130928055404/breakingbad/images/e/e7/BB-S5B-Walt-590.jpg",
@@ -30031,20 +30115,41 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog' ] )
 				} ]
 			} ];
 
+			// get post
+			this.getPost = function ( id ) {
+				return this.posts[ id ];
+			};
+
 			// create post
 			this.createPost = function ( post ) {
 
-				var lastPost = this.posts[ this.posts.length - 1 ];
-				var newID = parseInt( lastPost.id, 10 ) + 1; // fudge a unique ID for prototyping purposes
+				// add to top of data structure (just for demonstration purposes)
 				var newPost = Utilities.mergeObjs( post, {
-					id: newID,
 					time: new Date(),
 					replies: null,
 				} );
-
 				this.posts.unshift( newPost );
 
+				// send additions scope
 				$rootScope.$broadcast( 'posts.update' );
+			};
+
+			// add reply to post
+		this.createReply = function ( reply, parent ) {
+
+				// add to top of data structure (just for demonstration purposes)
+				var newReply = Utilities.mergeObjs( reply, {
+					time: new Date(),
+				} );
+
+				// add reply to parent post
+				parent.replies.unshift( newReply );
+				$rootScope.$broadcast( 'posts.update' );
+			};
+
+			// get replies for a post
+			this.getPostReplies = function ( post ) {
+				return this.posts;
 			};
 
 		}
