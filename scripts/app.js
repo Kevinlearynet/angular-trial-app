@@ -1,5 +1,9 @@
 'use strict';
 
+// CSS-Filters-Polyfill
+var polyfilter_scriptpath = '/scripts/vendor/CSS-Filters-Polyfill/lib/';
+
+// Angular
 var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog' ] );
 
 ( function ( angular, app ) {

@@ -12,8 +12,6 @@
 	var $el = angular.element;
 	var isDef = angular.isDefined;
 	var style = ( document.body || document.documentElement ).style;
-	var animationEndSupport = isDef( style.animation ) || isDef( style.WebkitAnimation ) || isDef( style.MozAnimation ) || isDef( style.MsAnimation ) || isDef( style.OAnimation );
-	var animationEndEvent = 'animationend webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend';
 	var forceBodyReload = false;
 
 	module.provider( 'ngDialog', function () {
@@ -54,21 +52,6 @@
 						}
 					},
 
-					setBodyPadding: function ( width ) {
-						var originalBodyPadding = parseInt( ( $body.css( 'padding-right' ) || 0 ), 10 );
-						$body.css( 'padding-right', ( originalBodyPadding + width ) + 'px' );
-						$body.data( 'ng-dialog-original-padding', originalBodyPadding );
-					},
-
-					resetBodyPadding: function () {
-						var originalBodyPadding = $body.data( 'ng-dialog-original-padding' );
-						if ( originalBodyPadding ) {
-							$body.css( 'padding-right', originalBodyPadding + 'px' );
-						} else {
-							$body.css( 'padding-right', '' );
-						}
-					},
-
 					closeDialog: function ( $dialog, value ) {
 						var id = $dialog.attr( 'id' );
 						if ( typeof window.Hammer !== 'undefined' ) {
@@ -85,26 +68,13 @@
 							dialogsCount -= 1;
 						}
 
-						if ( animationEndSupport ) {
-							$dialog.unbind( animationEndEvent ).bind( animationEndEvent, function () {
-								$dialog.scope().$destroy();
-								$dialog.remove();
-								if ( dialogsCount === 0 ) {
-									$body.removeClass( 'ngdialog-open' );
-									privateMethods.resetBodyPadding();
-								}
-								$rootScope.$broadcast( 'ngDialog.closed', $dialog );
-								// listen for the event in the relevant $scope
-							} ).addClass( 'ngdialog-closing' );
-						} else {
-							$dialog.scope().$destroy();
-							$dialog.remove();
-							if ( dialogsCount === 0 ) {
-								$body.removeClass( 'ngdialog-open' );
-								privateMethods.resetBodyPadding();
-							}
-							$rootScope.$broadcast( 'ngDialog.closed', $dialog );
+						$dialog.scope().$destroy();
+						$dialog.remove();
+						if ( dialogsCount === 0 ) {
+							$body.removeClass( 'ngdialog-open' );
 						}
+						$rootScope.$broadcast( 'ngDialog.closed', $dialog );
+
 						if ( defers[ id ] ) {
 							defers[ id ].resolve( {
 								id: id,

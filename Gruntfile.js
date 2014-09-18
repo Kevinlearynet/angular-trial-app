@@ -24,7 +24,10 @@ module.exports = function ( grunt ) {
 					'scripts/controllers/**/*.js',
 					'scripts/directives/**/*.js',
 					'scripts/filters/**/*.js',
-					'scripts/services/**/*.js'
+					'scripts/services/**/*.js',
+
+					'scripts/vendor/CSS-Filters-Polyfill/lib/cssParser.js',
+					'scripts/vendor/CSS-Filters-Polyfill/lib/css-filters-polyfill.js'
 				],
 				dest: 'dist/build.dev.js'
 			}
