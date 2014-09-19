@@ -12,6 +12,7 @@
 		"html5-boilerplate": "~4.3.0",
 		"CSS-Filters-Polyfill": "0.3.2",
 		"angular-promise-tracker": "2.0.X",
+		"angular-shims-placeholder": "0.2.x",
 		"moment": "2.8.x"
 	}
 }

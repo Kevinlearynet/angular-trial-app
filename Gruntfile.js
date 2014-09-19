@@ -20,6 +20,7 @@ module.exports = function ( grunt ) {
 					'scripts/vendor/ngDialog/js/ngDialog.js',
 					'scripts/vendor/moment/moment.js',
 					'scripts/vendor/angular-promise-tracker/promise-tracker.js',
+					'scripts/vendor/angular-shims-placeholder/dist/angular-shims-placeholder.js',
 
 					// angular app
 					'scripts/app.js',
