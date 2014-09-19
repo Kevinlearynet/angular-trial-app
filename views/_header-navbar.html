@@ -13,19 +13,16 @@
             </div>
             <nav class="user-panel-dropdown">
                 <a data-toggle="dropdown-menu" class="dropdown-toggle">
-                    <span class="avatar s-avatar">
-						<img src="{{user.avatar.sm}}">
-					</span>
 					<span class="avatar s-avatar">
-						<img ng-src="{{ formatAvatar(user.avatar, 30) }}" alt="My Account">
+						<img ng-src="{{ currentUserAvatar(user.avatar, 30) }}" alt="My Account">
 					</span>
 					<i class="icon-carat"></i>
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a href="#/account/profile">Profile</a></li>
-                    <li><a href="#/account/followers">Followers</a></li>
-                    <li><a href="#/account/following">Following</a></li>
-                    <li><a href="#/account/settings">Settings</a></li>
+                    <li><a href="/#/account/settings">Profile</a></li>
+                    <li><a href="/#/account/settings">Followers</a></li>
+                    <li><a href="/#/account/settings">Following</a></li>
+                    <li><a href="/#/account/settings">Settings</a></li>
                 </ul>
             </nav>
         </div><!-- // end [ng-controller="userPanel"] -->

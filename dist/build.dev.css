@@ -669,7 +669,45 @@ form.post-reply-form input {
   padding: 8px 0 7px;
 }
 /*------------------------------------------------------------------------------
-  Document
+  View: Account > Settings
+------------------------------------------------------------------------------*/
+#accountSettings fieldset.account-standard {
+  width: 335px;
+}
+#accountSettings .field-avatar-upload {
+  width: 85px;
+  float: left;
+  margin: 0 50px 0 0;
+}
+#accountSettings .upload-button {
+  width: 100%;
+  margin: 10px 0 0;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  border: 1px solid #dee1e5;
+  font-size: 13px;
+  padding: 2px 0;
+  text-align: center;
+  color: #bec3cc;
+  cursor: pointer;
+  position: relative;
+}
+#accountSettings .upload-button:hover {
+  color: #3f454d;
+  border-color: #a4abb4;
+}
+#accountSettings .upload-button input {
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  width: 100%;
+  opacity: 0;
+  position: absolute;
+}
+/*------------------------------------------------------------------------------
+  Typography
 ------------------------------------------------------------------------------*/
 body {
   font-family: "Proxima Nova", sans-serif;
@@ -691,6 +729,143 @@ a {
 a:hover {
   color: #3f454d;
 }
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: 1.3em;
+}
+h1 {
+  color: #3f454d;
+  font-size: 32px;
+  margin: 0 0 35px;
+  font-weight: normal;
+}
+h2 {
+  color: #70767f;
+  font-size: 13px;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+/*------------------------------------------------------------------------------
+  Forms
+------------------------------------------------------------------------------*/
+form.user-input {
+  width: 575px;
+  margin: 0 auto;
+}
+form.user-input .form-group {
+  margin-bottom: 20px;
+}
+form.user-input .form-group label {
+  display: none;
+}
+form.user-input .form-group input[type="text"],
+form.user-input .form-group input[type="search"],
+form.user-input .form-group input[type="number"],
+form.user-input .form-group input[type="password"],
+form.user-input .form-group input[type="email"] {
+  font-size: 15px;
+  color: #70767f;
+  border: 1px solid #c1c7cf;
+  padding: 10px 15px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  width: 100%;
+}
+form.user-input .field-row {
+  zoom: 1;
+}
+form.user-input .field-row:before {
+  content: '';
+  display: block;
+}
+form.user-input .field-row:after {
+  content: '';
+  display: table;
+  clear: both;
+}
+form.user-input .onoffswitch {
+  position: relative;
+  width: 55px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+form.user-input .onoffswitch-checkbox {
+  display: none;
+}
+form.user-input .onoffswitch-label {
+  display: block;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid #FFFFFF;
+  border-radius: 20px;
+}
+form.user-input .onoffswitch-inner {
+  display: block;
+  width: 200%;
+  margin-left: -100%;
+  -moz-transition: margin 0.3s ease-in 0s;
+  -webkit-transition: margin 0.3s ease-in 0s;
+  -o-transition: margin 0.3s ease-in 0s;
+  transition: margin 0.3s ease-in 0s;
+}
+form.user-input .onoffswitch-inner:before,
+form.user-input .onoffswitch-inner:after {
+  display: block;
+  float: left;
+  width: 50%;
+  height: 25px;
+  padding: 0;
+  line-height: 25px;
+  font-size: 14px;
+  color: white;
+  font-family: Trebuchet, Arial, sans-serif;
+  font-weight: bold;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+form.user-input .onoffswitch-inner:before {
+  content: "";
+  padding-left: 10px;
+  background-color: #18B084;
+  color: #FFFFFF;
+}
+form.user-input .onoffswitch-inner:after {
+  content: "OFF";
+  padding-right: 10px;
+  background-color: #FFFFFF;
+  color: #FFFFFF;
+  text-align: right;
+}
+form.user-input .onoffswitch-switch {
+  display: block;
+  width: 17px;
+  margin: 4px;
+  background: #FFFFFF;
+  border: 2px solid #FFFFFF;
+  border-radius: 20px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 26px;
+  -moz-transition: all 0.3s ease-in 0s;
+  -webkit-transition: all 0.3s ease-in 0s;
+  -o-transition: all 0.3s ease-in 0s;
+  transition: all 0.3s ease-in 0s;
+}
+form.user-input .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+  margin-left: 0;
+}
+form.user-input .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+  right: 0px;
+}
 /*------------------------------------------------------------------------------
   Layout
 ------------------------------------------------------------------------------*/
@@ -707,6 +882,16 @@ a:hover {
 main,
 [ui-view] {
   background: white;
+}
+.layout-no-hero {
+  margin-top: 59px;
+  padding-top: 50px;
+}
+.layout-no-hero h1 {
+  margin-top: 0;
+}
+.layout-no-hero .container {
+  width: 575px;
 }
 /*------------------------------------------------------------------------------
   Header
@@ -936,6 +1121,10 @@ i.icon-reply,
   width: 40px;
   height: 40px;
 }
+.avatar.l-avatar {
+  width: 85px;
+  height: 85px;
+}
 .btn {
   font-size: 15px;
   line-height: 100%;
@@ -956,6 +1145,12 @@ i.icon-reply,
 }
 .btn:active {
   background: black;
+}
+*.align-left {
+  float: left;
+}
+*.align-right {
+  float: right;
 }
 /*------------------------------------------------------------------------------
   Footer

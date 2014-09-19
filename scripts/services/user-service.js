@@ -29,6 +29,13 @@
 						avatar: "http://img4.wikia.nocookie.net/__cb20130928055404/breakingbad/images/e/e7/BB-S5B-Walt-590.jpg"
 					}
 				},
+				getCurrentUserAvatar: function ( size ) {
+					var baseUrl = this.users[ 1 ].avatar.replace( /^(https?|ftp):\/\//, '' );
+					return 'http://i0.wp.com/' + baseUrl + '?resize=' + size + ',' + size;
+				},
+				getCurrentUser: function () {
+					return this.users[ 1 ];
+				},
 				getAvatar: function ( url, size ) {
 					var baseUrl = url.replace( /^(https?|ftp):\/\//, '' );
 

@@ -29249,6 +29249,144 @@ angular.module('ui.router.state')
 }).call(this);
 ;
 
+//############[  scripts/vendor/angular-promise-tracker/promise-tracker.js  ]############
+
+/*
+ * promise-tracker - v2.0.0 - 2014-04-11
+ * http://github.com/ajoslin/angular-promise-tracker
+ * Created by Andy Joslin; Licensed under Public Domain
+ */
+
+(function() {
+
+angular.module('ajoslin.promise-tracker', [])
+
+.provider('promiseTracker', function() {
+  var trackers = {};
+
+  this.$get = ['$q', '$timeout', function($q, $timeout) {
+    function cancelTimeout(promise) {
+      if (promise) {
+        $timeout.cancel(promise);
+      }
+    }
+
+    return function PromiseTracker(options) {
+      //do new if user doesn't
+      if (!(this instanceof PromiseTracker)) {
+        return new PromiseTracker(options);
+      }
+
+      options = options || {};
+
+      //Array of promises being tracked
+      var tracked = [];
+      var self = this;
+
+      //Allow an optional "minimum duration" that the tracker has to stay active for.
+      var minDuration = options.minDuration;
+      //Allow a delay that will stop the tracker from activating until that time is reached
+      var activationDelay = options.activationDelay;
+
+      var minDurationPromise;
+      var activationDelayPromise;
+
+      self.active = function() {
+        //Even if we have a promise in our tracker, we aren't active until delay is elapsed
+        if (activationDelayPromise) {
+          return false;
+        }
+        return tracked.length > 0;
+      };
+
+      self.tracking = function() {
+        //Even if we aren't active, we could still have a promise in our tracker
+        return tracked.length > 0;
+      };
+
+      self.destroy = self.cancel = function() {
+        minDurationPromise = cancelTimeout(minDurationPromise);
+        activationDelayPromise = cancelTimeout(activationDelayPromise);
+        for (var i=tracked.length-1; i>=0; i--) {
+          tracked[i].resolve();
+        }
+        tracked.length = 0;
+      };
+
+      //Create a promise that will make our tracker active until it is resolved.
+      // @return deferred - our deferred object that is being tracked
+      self.createPromise = function() {
+        var deferred = $q.defer();
+        tracked.push(deferred);
+
+        //If the tracker was just inactive and this the first in the list of
+        //promises, we reset our delay and minDuration
+        //again.
+        if (tracked.length === 1) {
+          if (activationDelay) {
+            activationDelayPromise = $timeout(function() {
+              activationDelayPromise = cancelTimeout(activationDelayPromise);
+              startMinDuration();
+            }, activationDelay);
+          } else {
+            startMinDuration();
+          }
+        }
+
+        deferred.promise.then(onDone(false), onDone(true));
+
+        return deferred;
+
+        function startMinDuration() {
+          if (minDuration) {
+            minDurationPromise = $timeout(angular.noop, minDuration);
+          }
+        }
+
+        //Create a callback for when this promise is done. It will remove our
+        //tracked promise from the array if once minDuration is complete
+        function onDone(isError) {
+          return function(value) {
+            (minDurationPromise || $q.when()).then(function() {
+              var index = tracked.indexOf(deferred);
+              tracked.splice(index, 1);
+
+              //If this is the last promise, cleanup the timeouts
+              //for activationDelay
+              if (tracked.length === 0) {
+                activationDelayPromise = cancelTimeout(activationDelayPromise);
+              }
+            });
+          };
+        }
+      };
+
+      self.addPromise = function(promise) {
+        var then = promise && (promise.then || promise.$then ||
+                               (promise.$promise && promise.$promise.then));
+        if (!then) {
+          throw new Error("promiseTracker#addPromise expects a promise object!");
+        }
+        var deferred = self.createPromise();
+
+        //When given promise is done, resolve our created promise
+        //Allow $then for angular-resource objects
+        then(function success(value) {
+          deferred.resolve(value);
+          return value;
+        }, function error(value) {
+          deferred.reject(value);
+          return $q.reject(value);
+        });
+
+        return deferred;
+      };
+    };
+  }];
+});
+
+}());;
+
 //############[  scripts/app.js  ]############
 
 'use strict';
@@ -29257,12 +29395,12 @@ angular.module('ui.router.state')
 var polyfilter_scriptpath = '/scripts/vendor/CSS-Filters-Polyfill/lib/';
 
 // Angular
-var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog' ] );
+var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog', 'ajoslin.promise-tracker' ] );
 
 ( function ( angular, app ) {
 
 	// root expressions
-	app.run( function ( $rootScope, $state, $stateParams, UserService, ngDialog ) {
+	app.run( function ( $rootScope, $state, $stateParams, UserService ) {
 
 		// global variables used on every page in app
 		$rootScope.site = {
@@ -29325,6 +29463,13 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog' ] )
 				}
 			} );
 
+			// account settings
+			$stateProvider.state( {
+				name: 'settings',
+				url: '/account/settings',
+				templateUrl: '/views/account.settings.html'
+			} );
+
 		}
 	] );
 
@@ -29365,9 +29510,8 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog' ] )
 			/**
 			 * Format Avatar
 			 */
-			$scope.formatAvatar = function ( src, size ) {
-				var avatar = UserService.getAvatar( src, size );
-				return avatar;
+			$scope.currentUserAvatar = function ( src, size ) {
+				return UserService.getCurrentUserAvatar( size );
 			};
 		}
 	] );
@@ -29595,6 +29739,93 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog' ] )
 
 } )( angular, SimplySocial );;
 
+//############[  scripts/controllers/settings-controller.js  ]############
+
+/**
+ * User Control
+ */
+
+"use strict";
+( function ( angular, app ) {
+
+	// get user profile data
+	app.controller( "account.SettingsCtrl", [ '$scope', '$http', '$log', 'promiseTracker', '$timeout', 'UserService', 'fileUpload',
+		function ( $scope, $http, $log, promiseTracker, $timeout, UserService, fileUpload ) {
+
+			// gather current userdata
+			$scope.user = UserService.getCurrentUser();
+			$scope.avatar = UserService.getCurrentUserAvatar( 85 );
+
+			/**
+			 * File Upload
+			 */
+			$scope.uploadFile = function () {
+				var file = $scope.avatarUpload;
+				console.log( 'file is ' + JSON.stringify( file ) );
+				var uploadUrl = "/fileUpload";
+				fileUpload.uploadFileToUrl( file, uploadUrl );
+			};
+
+			/**
+			 * Form Submission Handler
+			 */
+			$scope.submit = function ( form ) {
+
+				// field flags
+				$scope.submitted = true;
+				$scope.changePassword = false;
+
+				// If form is invalid, return and let AngularJS show validation errors.
+				if ( form.$invalid ) {
+					return;
+				}
+
+				// Default values for the request.
+				$scope.progress = promiseTracker( 'progress' );
+				var config = {
+					params: {
+						'callback': 'JSON_CALLBACK',
+						'name': $scope.name,
+						'email': $scope.email,
+						'subjectList': $scope.subjectList,
+						'url': $scope.url,
+						'comments': $scope.comments
+					},
+					tracker: 'progress'
+				};
+
+				// Perform JSONP request.
+				$http.jsonp( 'response.json', config )
+					.success( function ( data, status, headers, config ) {
+						if ( data.status == 'OK' ) {
+							$scope.name = null;
+							$scope.email = null;
+							$scope.subjectList = null;
+							$scope.url = null;
+							$scope.comments = null;
+							$scope.messages = 'Your form has been sent!';
+							$scope.submitted = false;
+						} else {
+							$scope.messages = 'Oops, we received your request, but there was an error.';
+							$log.error( data );
+						}
+					} )
+					.error( function ( data, status, headers, config ) {
+						$scope.progress = data;
+						$scope.messages = 'There was a network error. Try again later.';
+						$log.error( data );
+					} );
+
+				// Hide the status message which was set above after 3 seconds.
+				$timeout( function () {
+					$scope.messages = null;
+				}, 3000 );
+			};
+		}
+	] );
+
+} )( angular, SimplySocial );;
+
 //############[  scripts/controllers/user-controllers.js  ]############
 
 /**
@@ -29609,6 +29840,35 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog' ] )
 		function ( $scope, UserService ) {
 
 			$scope.user = UserService.user;
+		}
+	] );
+
+} )( angular, SimplySocial );;
+
+//############[  scripts/directives/file-model.js  ]############
+
+/**
+ * Post Controls
+ */
+
+"use strict";
+( function ( angular, app ) {
+
+	app.directive( 'fileModel', [ '$parse',
+		function ( $parse ) {
+			return {
+				restrict: 'A',
+				link: function ( scope, element, attrs ) {
+					var model = $parse( attrs.fileModel );
+					var modelSetter = model.assign;
+
+					element.bind( 'change', function () {
+						scope.$apply( function () {
+							modelSetter( scope, element[ 0 ].files[ 0 ] );
+						} );
+					} );
+				}
+			};
 		}
 	] );
 
@@ -30249,6 +30509,35 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog' ] )
 
 } )( angular, SimplySocial );;
 
+//############[  scripts/services/upload-service.js  ]############
+
+/**
+ * Post Service
+ *
+ * In production this would probably handle our $.get and $.post
+ * requests to a server-side API backend
+ */
+"use strict";
+( function ( angular, app ) {
+	app.service( 'fileUpload', [ '$http',
+		function ( $http ) {
+			this.uploadFileToUrl = function ( file, uploadUrl ) {
+				var fd = new FormData();
+				fd.append( 'file', file );
+				$http.post( uploadUrl, fd, {
+					transformRequest: angular.identity,
+					headers: {
+						'Content-Type': undefined
+					}
+				} )
+					.success( function () {} )
+					.error( function () {} );
+			};
+		}
+	] ); // end app.service()
+
+} )( angular, SimplySocial );;
+
 //############[  scripts/services/user-service.js  ]############
 
 /**
@@ -30281,6 +30570,13 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog' ] )
 						website: "http://www.kevinleary.net",
 						avatar: "http://img4.wikia.nocookie.net/__cb20130928055404/breakingbad/images/e/e7/BB-S5B-Walt-590.jpg"
 					}
+				},
+				getCurrentUserAvatar: function ( size ) {
+					var baseUrl = this.users[ 1 ].avatar.replace( /^(https?|ftp):\/\//, '' );
+					return 'http://i0.wp.com/' + baseUrl + '?resize=' + size + ',' + size;
+				},
+				getCurrentUser: function () {
+					return this.users[ 1 ];
 				},
 				getAvatar: function ( url, size ) {
 					var baseUrl = url.replace( /^(https?|ftp):\/\//, '' );

@@ -31,9 +31,8 @@
 			/**
 			 * Format Avatar
 			 */
-			$scope.formatAvatar = function ( src, size ) {
-				var avatar = UserService.getAvatar( src, size );
-				return avatar;
+			$scope.currentUserAvatar = function ( src, size ) {
+				return UserService.getCurrentUserAvatar( size );
 			};
 		}
 	] );

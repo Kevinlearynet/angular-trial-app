@@ -1,0 +1,116 @@
+<main role="main" class="layout-no-hero" data-ng-controller="account.SettingsCtrl">
+	<div class="container">
+		<h1>Settings</h1>
+		<div >
+			<div class="alert alert-success" data-ng-bind="messages" data-ng-show="messages" id="messages"></div>
+
+			<div data-ng-show="progress.active()" style="color: red; font-size: 50px;">
+				Sending&hellip;
+			</div>
+
+			<form id="accountSettings" name="accountSettings" class="user-input" novalidate="">
+
+				<h2>Account</h2>
+
+				<div class="field-row">
+					<fieldset class="align-left field-avatar-upload">
+						<img ng-src="{{ avatar }}" class="avatar avatar-lg">
+						<div class="upload-button">
+							change
+							<input type="file" file-model="avatarUpload" />
+						</div>
+						{{ avatarUpload }}
+					</fieldset>
+
+					<fieldset class="align-left account-standard">
+						<div class="form-group">
+							<label for="name">Name</label>
+							<span class="validate-danger" data-ng-show="submitted && accountSettings.name.$error.required">Required!</span>
+							<input data-ng-model="name" value="Kevin Leary" name="name" type="text" required>
+						</div>
+
+						<div class="form-group">
+							<label for="email">Email</label>
+							<span class="validate-danger" data-ng-show="submitted && accountSettings.email.$error.required">Required!</span>
+							<span class="validate-danger" data-ng-show="submitted && accountSettings.$error.email">Invalid email!</span>
+							<input data-ng-model="email" value="info@kevinleary.net" name="email" type="email" required>
+						</div>
+
+						<div class="form-group">
+							<label for="subjectList">Password</label>
+							<span class="validate-danger" data-ng-show="submitted && accountSettings.subjectList.$error.required">Required!</span>
+							<input data-ng-model="password" name="password" type="password" placeholder="secret" ng-disabled="changePassword == 'false'" ng-attr-required="{{changePassword && 'required' }}">
+							<a ng-click="changePassword()" class="change-password">Change</a>
+						</div>
+					</fieldset>
+				</div>
+
+				<div class="field-row">
+					<h2>Notifications</h2>
+
+					<div class="form-group inline">
+						<div class="onoffswitch">
+							<input type="checkbox" name="notify-favorites" class="onoffswitch-checkbox" id="notify-favorites" checked>
+							<label class="onoffswitch-label" for="myonoffswitch">
+								<span class="onoffswitch-inner"></span>
+								<span class="onoffswitch-switch"></span>
+							</label>
+						</div>
+						<span>email me when my posts are marked as favorites</span>
+					</div>
+
+					<div class="form-group inline">
+						<div class="onoffswitch">
+							<input type="checkbox" name="notify-mentioned" class="onoffswitch-checkbox" id="notify-mentioned" checked>
+							<label class="onoffswitch-label" for="myonoffswitch">
+								<span class="onoffswitch-inner"></span>
+								<span class="onoffswitch-switch"></span>
+							</label>
+						</div>
+						<span>email me when I'm mentioned</span>
+					</div>
+
+					<div class="form-group inline">
+						<div class="onoffswitch">
+							<input type="checkbox" name="notify-reply" class="onoffswitch-checkbox" id="notify-reply" checked>
+							<label class="onoffswitch-label" for="myonoffswitch">
+								<span class="onoffswitch-inner"></span>
+								<span class="onoffswitch-switch"></span>
+							</label>
+						</div>
+						<span>email me when I get a reply</span>
+					</div>
+
+					<div class="form-group inline">
+						<div class="onoffswitch">
+							<input type="checkbox" name="notify-follows" class="onoffswitch-checkbox" id="notify-follows" checked>
+							<label class="onoffswitch-label" for="myonoffswitch">
+								<span class="onoffswitch-inner"></span>
+								<span class="onoffswitch-switch"></span>
+							</label>
+						</div>
+						<span>email me when someone follows me</span>
+					</div>
+				</div>
+
+				<div class="field-row">
+					<h2>Privacy</h2>
+					<div class="form-group">
+						<input type="checkbox" name="privacy-tagging" id="privacy-tagging">
+						<label for="subjectList">allow anyone to tag me</label>
+					</div>
+
+only allow people I follow to tag me
+don't allow anyone to tag me
+add a location to my posts
+let others find me by my email address
+tailor ads based on my information
+</div>
+
+				<div class="field-row field-row-submit">
+					<button class="btn btn-default" data-ng-click="submit(accountSettings)" data-ng-disabled="progress.active()">Save Changes</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</main>

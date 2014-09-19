@@ -4,12 +4,12 @@
 var polyfilter_scriptpath = '/scripts/vendor/CSS-Filters-Polyfill/lib/';
 
 // Angular
-var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog' ] );
+var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog', 'ajoslin.promise-tracker' ] );
 
 ( function ( angular, app ) {
 
 	// root expressions
-	app.run( function ( $rootScope, $state, $stateParams, UserService, ngDialog ) {
+	app.run( function ( $rootScope, $state, $stateParams, UserService ) {
 
 		// global variables used on every page in app
 		$rootScope.site = {
@@ -70,6 +70,13 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog' ] )
 						$state.go( 'posts' );
 					} );
 				}
+			} );
+
+			// account settings
+			$stateProvider.state( {
+				name: 'settings',
+				url: '/account/settings',
+				templateUrl: '/views/account.settings.html'
 			} );
 
 		}
