@@ -9,9 +9,35 @@
 	app.controller( "account.SettingsCtrl", [ '$scope', '$http', '$log', 'promiseTracker', '$timeout', 'UserService', 'fileUpload',
 		function ( $scope, $http, $log, promiseTracker, $timeout, UserService, fileUpload ) {
 
-			// gather current userdata
+			// account
 			$scope.user = UserService.getCurrentUser();
+			$scope.email = $scope.user.email;
+			$scope.name = $scope.user.name;
 			$scope.avatar = UserService.getCurrentUserAvatar( 85 );
+
+			// notifications
+			$scope.notifyFavorites = 1;
+			$scope.notifyMentions = 0;
+			$scope.notifyReply = 1;
+			$scope.notifyFollow = 1;
+
+			// privacy
+			$scope.publicTagging = 1;
+			$scope.followingTagging = 0;
+			$scope.disallowTagging = 1;
+			$scope.geoTagging = 0;
+			$scope.emailVisibility = 1;
+			$scope.personalizeAds = 1;
+
+			/**
+			 * Password Change
+			 */
+			$scope.changePassword = false;
+			$scope.passwordPlaceholder = '•••••••';
+			$scope.changePasswordToggle = function () {
+				$scope.changePassword = !$scope.changePassword;
+				$scope.passwordPlaceholder = null;
+			};
 
 			/**
 			 * File Upload
@@ -24,13 +50,21 @@
 			};
 
 			/**
+			 * On/off switch
+			 */
+			$scope.onOffSwitch = function ( obj, $event ) {
+
+				console.log( $event.target );
+
+			};
+
+			/**
 			 * Form Submission Handler
 			 */
 			$scope.submit = function ( form ) {
 
 				// field flags
 				$scope.submitted = true;
-				$scope.changePassword = false;
 
 				// If form is invalid, return and let AngularJS show validation errors.
 				if ( form.$invalid ) {

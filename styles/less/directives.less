@@ -1,0 +1,118 @@
+/*------------------------------------------------------------------------------
+  Directive: On/off switch
+------------------------------------------------------------------------------*/
+
+.on-off-switch {
+	position: relative;
+	width: 55px;
+	.user-select( none );
+	&.active {
+		.on-off-switch-inner { margin-left: 0; }
+		.on-off-switch-switch { right: 0px; }
+	}
+}
+.on-off-switch-checkbox {
+	display: none;
+}
+.on-off-switch-label {
+	display: block;
+	overflow: hidden;
+	cursor: pointer;
+	border: 2px solid #FFFFFF;
+	.border-radius( 20px );
+}
+.on-off-switch-inner {
+	display: block;
+	width: 200%;
+	margin-left: -100%;
+	.transition( margin 0.3s ease-in 0s );
+	&:before, &:after {
+		display: block;
+		float: left;
+		width: 50%;
+		height: 25px;
+		padding: 0;
+		.box-sizing( border-box );
+	}
+	&:before {
+		content: "";
+		padding-left: 10px;
+		background-color: #18B084;
+		color: #FFFFFF;
+	}
+	&:after {
+		content: "";
+		padding-right: 10px;
+		background-color: #70767F;
+		color: #FFFFFF;
+		text-align: right;
+	}
+}
+.on-off-switch-switch {
+	display: block;
+	width: 17px;
+	margin: 4px;
+	background: #FFFFFF;
+	border: 2px solid #FFFFFF;
+	.border-radius( 20px );
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 26px;
+	.transition( all 0.3s ease-in 0s );
+}
+
+/*------------------------------------------------------------------------------
+  Directive: Circular Checkbox
+------------------------------------------------------------------------------*/
+
+.circular-checkbox {
+	position: relative;
+	width: 22px;
+	height: 22px;
+	display: inline-block;
+	border: 1px solid @link-color;
+	.border-radius( 22px );
+	.user-select( none );
+	&.active {
+		.circular-checkbox-inner { margin-left: 0; }
+		.circular-checkbox-switch { right: 0px; }
+	}
+}
+.circular-checkbox-checkbox {
+	display: none;
+}
+.circular-checkbox-label {
+	display: block;
+	overflow: hidden;
+	cursor: pointer;
+	border: 3px solid #FFFFFF;
+	.border-radius( 22px );
+	width: 16px;
+	height: 16px;
+}
+.circular-checkbox-inner {
+	display: block;
+	width: 200%;
+	margin-left: -100%;
+	.transition( margin 0.3s ease-in 0s );
+	&:before, &:after {
+		display: block;
+		float: left;
+		width: 50%;
+		height: 25px;
+		padding: 0;
+		.box-sizing( border-box );
+	}
+	&:before {
+		content: "";
+		padding-left: 10px;
+		background-color: @action-color;
+	}
+	&:after {
+		content: "";
+		padding-right: 10px;
+		background-color: white;
+		text-align: right;
+	}
+}

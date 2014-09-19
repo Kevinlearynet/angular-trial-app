@@ -91,3 +91,14 @@
 		clear: both;
 	}
 }
+
+.box-sizing( @props: border-box ) {
+	-moz-box-sizing: @props;
+	-webkit-box-sizing: @props;
+	box-sizing: @props;
+}
+.user-select( @props: none ) {
+	-webkit-user-select: @props;
+	-moz-user-select: @props;
+	-ms-user-select: @props;
+}

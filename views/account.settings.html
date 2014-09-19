@@ -1,10 +1,10 @@
-<main role="main" class="layout-no-hero" data-ng-controller="account.SettingsCtrl">
+<main role="main" class="layout-no-hero" ng-controller="account.SettingsCtrl">
 	<div class="container">
 		<h1>Settings</h1>
 		<div >
-			<div class="alert alert-success" data-ng-bind="messages" data-ng-show="messages" id="messages"></div>
+			<div class="alert alert-success" ng-bind="messages" ng-show="messages" id="messages"></div>
 
-			<div data-ng-show="progress.active()" style="color: red; font-size: 50px;">
+			<div ng-show="progress.active()" style="color: red; font-size: 50px;">
 				Sending&hellip;
 			</div>
 
@@ -19,96 +19,89 @@
 							change
 							<input type="file" file-model="avatarUpload" />
 						</div>
-						{{ avatarUpload }}
 					</fieldset>
 
 					<fieldset class="align-left account-standard">
 						<div class="form-group">
-							<label for="name">Name</label>
-							<span class="validate-danger" data-ng-show="submitted && accountSettings.name.$error.required">Required!</span>
-							<input data-ng-model="name" value="Kevin Leary" name="name" type="text" required>
+							<label class="hidden" for="name">Name</label>
+							<input ng-model="name" value="{{ name }}" name="name" type="text" required>
 						</div>
 
 						<div class="form-group">
-							<label for="email">Email</label>
-							<span class="validate-danger" data-ng-show="submitted && accountSettings.email.$error.required">Required!</span>
-							<span class="validate-danger" data-ng-show="submitted && accountSettings.$error.email">Invalid email!</span>
-							<input data-ng-model="email" value="info@kevinleary.net" name="email" type="email" required>
+							<label class="hidden" for="email">Email</label>
+							<input ng-model="email" value="{{ email }}" name="email" type="email" required>
 						</div>
 
 						<div class="form-group">
-							<label for="subjectList">Password</label>
-							<span class="validate-danger" data-ng-show="submitted && accountSettings.subjectList.$error.required">Required!</span>
-							<input data-ng-model="password" name="password" type="password" placeholder="secret" ng-disabled="changePassword == 'false'" ng-attr-required="{{changePassword && 'required' }}">
-							<a ng-click="changePassword()" class="change-password">Change</a>
+							<label class="hidden" for="subjectList">Password</label>
+							<div class="password-change">
+								<input ng-model="password" name="password" placeholder="{{ passwordPlaceholder }}" ng-class="{'top' : changePassword}" type="password" ng-disabled="!changePassword" ng-required="submitted && changePassword">
+								<input ng-model="passwordAgain" name="password" placeholder="{{ passwordPlaceholder }}" type="password" ng-show="changePassword" ng-required="submitted && changePassword">
+								<a ng-click="changePasswordToggle()" class="change-password">{{ changePassword === false ? "change" : "" }}</a>
+							</div>
 						</div>
 					</fieldset>
 				</div>
 
 				<div class="field-row">
 					<h2>Notifications</h2>
-
+s
 					<div class="form-group inline">
-						<div class="onoffswitch">
-							<input type="checkbox" name="notify-favorites" class="onoffswitch-checkbox" id="notify-favorites" checked>
-							<label class="onoffswitch-label" for="myonoffswitch">
-								<span class="onoffswitch-inner"></span>
-								<span class="onoffswitch-switch"></span>
-							</label>
-						</div>
-						<span>email me when my posts are marked as favorites</span>
+						<div ng-on-off-switch ng-model="notifyFavorites"></div>
+						<span class="label-inline">email me when my posts are marked as favorites</span>
 					</div>
 
 					<div class="form-group inline">
-						<div class="onoffswitch">
-							<input type="checkbox" name="notify-mentioned" class="onoffswitch-checkbox" id="notify-mentioned" checked>
-							<label class="onoffswitch-label" for="myonoffswitch">
-								<span class="onoffswitch-inner"></span>
-								<span class="onoffswitch-switch"></span>
-							</label>
-						</div>
-						<span>email me when I'm mentioned</span>
+						<div ng-on-off-switch ng-model="notifyMentions"></div>
+						<span class="label-inline">email me when I'm mentioned</span>
 					</div>
 
 					<div class="form-group inline">
-						<div class="onoffswitch">
-							<input type="checkbox" name="notify-reply" class="onoffswitch-checkbox" id="notify-reply" checked>
-							<label class="onoffswitch-label" for="myonoffswitch">
-								<span class="onoffswitch-inner"></span>
-								<span class="onoffswitch-switch"></span>
-							</label>
-						</div>
-						<span>email me when I get a reply</span>
+						<div ng-on-off-switch ng-model="notifyReply"></div>
+						<span class="label-inline">email me when I get a reply</span>
 					</div>
 
 					<div class="form-group inline">
-						<div class="onoffswitch">
-							<input type="checkbox" name="notify-follows" class="onoffswitch-checkbox" id="notify-follows" checked>
-							<label class="onoffswitch-label" for="myonoffswitch">
-								<span class="onoffswitch-inner"></span>
-								<span class="onoffswitch-switch"></span>
-							</label>
-						</div>
-						<span>email me when someone follows me</span>
+						<div ng-on-off-switch ng-model="notifyFollow"></div>
+						<span class="label-inline">email me when someone follows me</span>
 					</div>
 				</div>
 
 				<div class="field-row">
 					<h2>Privacy</h2>
-					<div class="form-group">
-						<input type="checkbox" name="privacy-tagging" id="privacy-tagging">
-						<label for="subjectList">allow anyone to tag me</label>
+					<div class="form-group inline field-checkbox-circle">
+						<div ng-circular-checkbox ng-model="publicTagging"></div>
+						<span class="label-inline">allow anyone to tag me</span>
 					</div>
 
-only allow people I follow to tag me
-don't allow anyone to tag me
-add a location to my posts
-let others find me by my email address
-tailor ads based on my information
-</div>
+					<div class="form-group inline field-checkbox-circle">
+						<div ng-circular-checkbox ng-model="followingTagging"></div>
+						<span class="label-inline">only allow people I follow to tag me</span>
+					</div>
+
+					<div class="form-group inline field-checkbox-circle">
+						<div ng-circular-checkbox ng-model="disallowTagging"></div>
+						<span class="label-inline">don't allow anyone to tag me</span>
+					</div>
+
+					<div class="form-group inline field-checkbox-circle">
+						<div ng-circular-checkbox ng-model="geoTagging"></div>
+						<span class="label-inline">add a location to my posts</span>
+					</div>
+
+					<div class="form-group inline field-checkbox-circle">
+						<div ng-circular-checkbox ng-model="emailVisibility"></div>
+						<span class="label-inline">let others find me by my email address</span>
+					</div>
+
+					<div class="form-group inline field-checkbox-circle">
+						<div ng-circular-checkbox ng-model="personalizeAds"></div>
+						<span class="label-inline">tailor ads based on my information</span>
+					</div>
+				</div>
 
 				<div class="field-row field-row-submit">
-					<button class="btn btn-default" data-ng-click="submit(accountSettings)" data-ng-disabled="progress.active()">Save Changes</button>
+					<button class="btn btn-default" ng-click="submit(accountSettings)" ng-disabled="progress.active()">Save Changes</button>
 				</div>
 			</form>
 		</div>

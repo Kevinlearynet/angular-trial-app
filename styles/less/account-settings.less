@@ -9,6 +9,37 @@
 		width: 335px;
 	}
 
+	// password
+	input[type="password"]::-webkit-input-placeholder { color: @title-color; }
+	input[type="password"]:-moz-placeholder { color: @title-color; }
+	input[type="password"]::-moz-placeholder { color: @title-color; }
+	input[type="password"]:-ms-input-placeholder { color: @title-color; }
+	input[type="password"] {
+		letter-spacing: 2px;
+		font-size: 21px;
+		padding-top: 6px;
+		padding-bottom: 6px;
+		&.top {
+			.border-radius( 3px 3px 0 0 );
+			border-bottom: none;
+		}
+		+ input[type="password"] {
+			.border-radius( 0 0 3px 3px );
+		}
+	}
+	.password-change {
+		position: relative;
+		z-index: 1;
+		> a {
+			position: absolute;
+			right: -16px;
+			top: 11px;
+			font-size: 13px;
+			text-transform: lowercase;
+			z-index: 2;
+		}
+	}
+
 	// avatar uploader
 	.field-avatar-upload {
 		width: 85px;
