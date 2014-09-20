@@ -40,6 +40,10 @@
 	margin: 180px auto 0;
 	max-width: 100%;
 	position: relative;
+	@media (max-width: 767px) {
+		margin: 0;
+		.border-radius( 0 );
+	}
 }
 
 // transitions: close
@@ -94,6 +98,11 @@ body.ngdialog-open {
 	&:hover, &:active {
 		color: #ccc;
 		border-color: #ccc;
+	}
+	@media (max-width: 767px) {
+		z-index: 1000;
+		top: 15px;
+		right: 15px;
 	}
 }
 
@@ -166,6 +175,13 @@ body.ngdialog-open {
 		width: 525px;
 		padding: 25px 25px 20px;
 	}
+
+	@media (max-width: 767px) {
+		.ngdialog-content {
+			width: auto;
+			.border-radius( 0 );
+		}
+	}
 }
 
 // modal: post detail
@@ -186,4 +202,11 @@ body.ngdialog-open {
 		width: 975px;
 	}
 
+	@media (max-width: 767px) {
+		.ngdialog-content {
+			width: auto;
+			padding: 0;
+			.border-radius( 0 );
+		}
+	}
 }

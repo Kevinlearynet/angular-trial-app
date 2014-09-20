@@ -13,6 +13,9 @@ form.posts-add {
 	display: block;
 	.border-radius( 3px );
 	width: @controls-width - ( @padding * 2 );
+	@media (max-width: 767px) {
+		width: auto;
+	}
 	input {
 		animation: blink-empty 1s infinite;
 		border-left: transparent solid 1px;
@@ -91,6 +94,12 @@ form.posts-add {
 	bottom: 0;
 	left: 50%;
 	margin-left: -( @controls-width / 2) ;
+	@media (max-width: 767px) {
+		background: rgba(0,0,0,0.5);
+		width: 100%;
+		position: static;
+		margin: 0;
+	}
 	> ul {
 		list-style: none;
 		margin: 0;
@@ -128,11 +137,18 @@ form.posts-add {
 			color: white;
 			border-color: rgb(0, 178, 134);
 		}
+		@media (max-width: 767px) {
+			margin: 0 0 0 20px;
+			li + li { margin-left: 20px; }
+		}
 	}
 	.posts-layout {
 		float: right;
 		.clearfix();
 		margin-right: -8px;
+		@media (max-width: 767px) {
+			display: none;
+		}
 		a {
 			padding: 18px 8px;
 			cursor: pointer;
@@ -149,12 +165,22 @@ form.posts-add {
 // list
 main.posts-list {
 	padding: 50px 0;
+	@media (max-width: 767px) {
+		padding: 0;
+	}
 }
 
 // layout: list (default)
 main.posts-layout-list {
 	.container {
 		width: 575px;
+	}
+	@media (max-width: 767px) {
+		.container {
+			width: auto;
+			padding: 0;
+			margin-bottom: -21px;
+		}
 	}
 }
 
@@ -184,6 +210,8 @@ main.posts-layout-grid {
 
 // individual post
 article.post {
+	.border-radius( 3px );
+	overflow: hidden;
 	.post-inner {
 		padding: 1px;
 		position: relative;
@@ -195,8 +223,6 @@ article.post {
 	}
 	figure {
 		margin: 0 -2px -2px -2px;
-		.border-radius( 0 0 3px 3px );
-		overflow: hidden;
 		img {
 			max-width: 100%;
 		}
@@ -242,6 +268,18 @@ article.post-primary {
 	}
 	+ article.post-primary {
 		margin-top: 25px;
+	}
+	@media (max-width: 767px) {
+		.post-inner {
+			.border-radius( 0 );
+			border: none;
+		}
+		+ article.post-primary {
+			margin-top: 0;
+			.post-inner {
+				border-top: 1px solid @light-border;
+			}
+		}
 	}
 }
 

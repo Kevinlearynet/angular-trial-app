@@ -69,6 +69,16 @@ form.user-input {
 	width: 575px;
 	margin: 0 auto 50px;
 
+	@media (max-width: 767px) {
+		width: auto;
+		margin: 0;
+		.field-row {
+			> h2 {
+				margin-bottom: 15px !important;
+			}
+		}
+	}
+
 	.hidden {
 		display: none;
 	}
@@ -93,6 +103,7 @@ form.user-input {
 	}
 
 	.field-row {
+		.clearfix();
 		> h2 {
 			margin: 0 0 30px;
 		}
@@ -101,7 +112,15 @@ form.user-input {
 			border-top: 1px solid @light-border;
 			margin-top: 50px;
 		}
-		.clearfix();
+		@media (max-width: 767px) {
+			+ .field-row {
+				padding-top: 25px;
+				margin-top: 25px;
+				.container {
+					width: auto;
+				}
+			}
+		}
 	}
 
 	// inline
@@ -151,6 +170,15 @@ main, [ui-view] {
 	}
 	.container {
 		width: 575px;
+	}
+	@media (max-width: 767px) {
+		padding-top: 20px;
+		.container {
+			width: auto;
+		}
+		h1 {
+			margin-bottom: 20px;
+		}
 	}
 }
 
@@ -325,6 +353,14 @@ header.navbar {
 	background-position: center center;
 	background-repeat: no-repeat;
 }
+@media (max-width: 767px) {
+	.hero {
+		height: auto;
+		padding-top: 0;
+		position: relative;
+		margin-top: 59px;
+	}
+}
 
 /*------------------------------------------------------------------------------
   Globals
@@ -417,6 +453,15 @@ footer.site-info {
 	font-weight: bold;
 	font-size: 13px;
 	background: white;
+	@media (max-width: 767px) {
+		background: #262728;
+		color: @link-color;
+		padding: 25px 0 20px;
+		margin-top: 20px;
+		a:hover {
+			color: white !important;
+		}
+	}
 	.bottom-nav {
 		margin: 0 auto;
 		display: inline-block;

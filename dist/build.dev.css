@@ -131,6 +131,14 @@ i.icon-like {
   max-width: 100%;
   position: relative;
 }
+@media (max-width: 767px) {
+  .ngdialog-content {
+    margin: 0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+  }
+}
 .page {
   -moz-transition: all 0.3s;
   -webkit-transition: all 0.3s;
@@ -195,6 +203,13 @@ body.ngdialog-open .ngdialog-content {
 .ngdialog-close:active {
   color: #ccc;
   border-color: #ccc;
+}
+@media (max-width: 767px) {
+  .ngdialog-close {
+    z-index: 1000;
+    top: 15px;
+    right: 15px;
+  }
 }
 /*------------------------------------------------------------------------------
   Animations
@@ -294,6 +309,14 @@ body.ngdialog-open .ngdialog-content {
   width: 525px;
   padding: 25px 25px 20px;
 }
+@media (max-width: 767px) {
+  .ngdialog-create-post .ngdialog-content {
+    width: auto;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+  }
+}
 .ngdialog-post-detail {
   position: absolute;
 }
@@ -307,6 +330,15 @@ body.ngdialog-open .ngdialog-content {
 .ngdialog-post-detail .ngdialog-content {
   background: white;
   width: 975px;
+}
+@media (max-width: 767px) {
+  .ngdialog-post-detail .ngdialog-content {
+    width: auto;
+    padding: 0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+  }
 }
 /*------------------------------------------------------------------------------
   Directive: On/off switch
@@ -470,6 +502,11 @@ form.posts-add {
   border-radius: 3px;
   width: 515px;
 }
+@media (max-width: 767px) {
+  form.posts-add {
+    width: auto;
+  }
+}
 form.posts-add input {
   animation: blink-empty 1s infinite;
   border-left: transparent solid 1px;
@@ -591,6 +628,14 @@ form.posts-add.error :-ms-input-placeholder {
   display: table;
   clear: both;
 }
+@media (max-width: 767px) {
+  .posts-nav {
+    background: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    position: static;
+    margin: 0;
+  }
+}
 .posts-nav > ul {
   list-style: none;
   margin: 0;
@@ -639,6 +684,14 @@ form.posts-add.error :-ms-input-placeholder {
   color: white;
   border-color: #00b286;
 }
+@media (max-width: 767px) {
+  .posts-nav .posts-filter {
+    margin: 0 0 0 20px;
+  }
+  .posts-nav .posts-filter li + li {
+    margin-left: 20px;
+  }
+}
 .posts-nav .posts-layout {
   float: right;
   zoom: 1;
@@ -652,6 +705,11 @@ form.posts-add.error :-ms-input-placeholder {
   content: '';
   display: table;
   clear: both;
+}
+@media (max-width: 767px) {
+  .posts-nav .posts-layout {
+    display: none;
+  }
 }
 .posts-nav .posts-layout a {
   padding: 18px 8px;
@@ -678,8 +736,20 @@ form.posts-add.error :-ms-input-placeholder {
 main.posts-list {
   padding: 50px 0;
 }
+@media (max-width: 767px) {
+  main.posts-list {
+    padding: 0;
+  }
+}
 main.posts-layout-list .container {
   width: 575px;
+}
+@media (max-width: 767px) {
+  main.posts-layout-list .container {
+    width: auto;
+    padding: 0;
+    margin-bottom: -21px;
+  }
 }
 main.posts-layout-grid .container {
   width: 1175px;
@@ -703,6 +773,12 @@ main.posts-layout-grid article.post {
 main.posts-layout-grid article.post + article {
   margin-top: 0;
 }
+article.post {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  overflow: hidden;
+}
 article.post .post-inner {
   padding: 1px;
   position: relative;
@@ -723,10 +799,6 @@ article.post span.avatar {
 }
 article.post figure {
   margin: 0 -2px -2px -2px;
-  -webkit-border-radius: 0 0 3px 3px;
-  -moz-border-radius: 0 0 3px 3px;
-  border-radius: 0 0 3px 3px;
-  overflow: hidden;
 }
 article.post figure img {
   max-width: 100%;
@@ -794,6 +866,20 @@ article.post-primary .post-inner {
 }
 article.post-primary + article.post-primary {
   margin-top: 25px;
+}
+@media (max-width: 767px) {
+  article.post-primary .post-inner {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    border: none;
+  }
+  article.post-primary + article.post-primary {
+    margin-top: 0;
+  }
+  article.post-primary + article.post-primary .post-inner {
+    border-top: 1px solid #dee1e5;
+  }
 }
 article.post-reply {
   border-bottom: 1px solid #dee1e5;
@@ -947,6 +1033,15 @@ form.user-input {
   width: 575px;
   margin: 0 auto 50px;
 }
+@media (max-width: 767px) {
+  form.user-input {
+    width: auto;
+    margin: 0;
+  }
+  form.user-input .field-row > h2 {
+    margin-bottom: 15px !important;
+  }
+}
 form.user-input .hidden {
   display: none;
 }
@@ -978,14 +1073,6 @@ form.user-input .form-group input[type="email"].ng-invalid {
 form.user-input .field-row {
   zoom: 1;
 }
-form.user-input .field-row > h2 {
-  margin: 0 0 30px;
-}
-form.user-input .field-row + .field-row {
-  padding-top: 50px;
-  border-top: 1px solid #dee1e5;
-  margin-top: 50px;
-}
 form.user-input .field-row:before {
   content: '';
   display: block;
@@ -994,6 +1081,23 @@ form.user-input .field-row:after {
   content: '';
   display: table;
   clear: both;
+}
+form.user-input .field-row > h2 {
+  margin: 0 0 30px;
+}
+form.user-input .field-row + .field-row {
+  padding-top: 50px;
+  border-top: 1px solid #dee1e5;
+  margin-top: 50px;
+}
+@media (max-width: 767px) {
+  form.user-input .field-row + .field-row {
+    padding-top: 25px;
+    margin-top: 25px;
+  }
+  form.user-input .field-row + .field-row .container {
+    width: auto;
+  }
 }
 form.user-input .form-group.inline + .form-group {
   margin-top: 16px;
@@ -1036,6 +1140,17 @@ main,
 }
 .layout-no-hero .container {
   width: 575px;
+}
+@media (max-width: 767px) {
+  .layout-no-hero {
+    padding-top: 20px;
+  }
+  .layout-no-hero .container {
+    width: auto;
+  }
+  .layout-no-hero h1 {
+    margin-bottom: 20px;
+  }
 }
 /*------------------------------------------------------------------------------
   Header
@@ -1211,6 +1326,14 @@ header.navbar .logo {
   background-position: center center;
   background-repeat: no-repeat;
 }
+@media (max-width: 767px) {
+  .hero {
+    height: auto;
+    padding-top: 0;
+    position: relative;
+    margin-top: 59px;
+  }
+}
 /*------------------------------------------------------------------------------
   Globals
 ------------------------------------------------------------------------------*/
@@ -1308,6 +1431,17 @@ footer.site-info {
   font-weight: bold;
   font-size: 13px;
   background: white;
+}
+@media (max-width: 767px) {
+  footer.site-info {
+    background: #262728;
+    color: #bec3cc;
+    padding: 25px 0 20px;
+    margin-top: 20px;
+  }
+  footer.site-info a:hover {
+    color: white !important;
+  }
 }
 footer.site-info .bottom-nav {
   margin: 0 auto;
