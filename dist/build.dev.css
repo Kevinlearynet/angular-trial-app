@@ -1366,11 +1366,15 @@ header.navbar .logo {
 }
 .user-panel-dropdown .dropdown-toggle {
   display: block;
+  position: relative;
+  width: 51px;
+  height: 30px;
 }
 .user-panel-dropdown .dropdown-toggle i.icon-carat {
-  position: relative;
-  top: -7px;
-  left: 1px;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  margin: -7px 0 0;
 }
 .user-panel-dropdown .dropdown-menu {
   display: none;
