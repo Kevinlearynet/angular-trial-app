@@ -1381,6 +1381,7 @@ header.navbar .logo {
   position: absolute;
   width: 96px;
   right: -13px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
   background-color: white;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
