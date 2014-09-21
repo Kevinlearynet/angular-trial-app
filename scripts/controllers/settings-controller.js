@@ -44,7 +44,6 @@
 			 */
 			$scope.uploadFile = function () {
 				var file = $scope.avatarUpload;
-				console.log( 'file is ' + JSON.stringify( file ) );
 				var uploadUrl = "/fileUpload";
 				fileUpload.uploadFileToUrl( file, uploadUrl );
 			};
@@ -53,9 +52,7 @@
 			 * On/off switch
 			 */
 			$scope.onOffSwitch = function ( obj, $event ) {
-
-				console.log( $event.target );
-
+				// update $scope
 			};
 
 			/**

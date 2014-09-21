@@ -146,7 +146,7 @@ form.posts-add {
 		float: right;
 		.clearfix();
 		margin-right: -8px;
-		@media (max-width: 767px) {
+		@media (max-width: 1215px) {
 			display: none;
 		}
 		a {
@@ -179,7 +179,7 @@ main.posts-layout-list {
 		.container {
 			width: auto;
 			padding: 0;
-			margin-bottom: -21px;
+			margin-bottom: -1px;
 		}
 	}
 }
@@ -205,13 +205,53 @@ main.posts-layout-grid {
 		+ article {
 			margin-top: 0;
 		}
+		figure {
+			margin: 0 0 -2px -2px;
+			overflow: hidden;
+			width: 375px;
+			.border-radius( 0 0 3px 3px );
+		}
+	}
+	@media (max-width: 1215px) {
+		.container {
+			width: 575px;
+			padding: 0;
+			margin-bottom: -21px;
+			.column-count( auto );
+			.column-gap( auto );
+		}
+		article.post {
+			figure {
+				width: auto;
+				margin: 0 0 -1px;
+			}
+		}
+	}
+	@media (max-width: 767px) {
+		article.post {
+			margin-bottom: 0;
+			figure {
+				margin: 0 -1px -1px;
+				overflow: visible;
+				display: block;
+				img {
+					display: block;
+				}
+			}
+		}
+		.container {
+			width: auto;
+			padding: 0;
+			margin-bottom: 0;
+			.column-count( auto );
+			.column-gap( auto );
+		}
 	}
 }
 
 // individual post
 article.post {
 	.border-radius( 3px );
-	overflow: hidden;
 	.post-inner {
 		padding: 1px;
 		position: relative;
@@ -256,6 +296,12 @@ article.post {
 			cursor: pointer;
 			.opacity( 0.3 );
 			&:hover, &:hover i { .opacity( 0.65 ); }
+		}
+	}
+
+	@media (max-width: 767px) {
+		figure {
+			margin: 0 -1px -1px -1px;
 		}
 	}
 }

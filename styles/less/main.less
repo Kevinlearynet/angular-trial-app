@@ -33,6 +33,7 @@ body {
 }
 input, select, button {
 	font-family: @body-font;
+	.box-sizing( border-box );
 }
 a {
 	text-decoration: none;
@@ -156,6 +157,9 @@ form.user-input {
 .page {
 	position: relative;
 	padding: 1px 0;
+	@media (max-width: 767px) {
+		padding: 0;
+	}
 }
 main, [ui-view] {
 	background: white;
@@ -204,6 +208,9 @@ header.navbar {
 		padding: 4px 5px;
 		margin: 0 -5px;
 		float: left;
+	}
+	@media (max-width: 580px) {
+		.user-panel-search { display: none }
 	}
 }
 
@@ -457,7 +464,7 @@ footer.site-info {
 		background: #262728;
 		color: @link-color;
 		padding: 25px 0 20px;
-		margin-top: 20px;
+		margin-top: 0;
 		a:hover {
 			color: white !important;
 		}

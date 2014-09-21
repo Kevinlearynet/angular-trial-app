@@ -17,7 +17,6 @@ module.exports = function ( grunt ) {
 					'scripts/vendor/angular/angular.js',
 					'scripts/vendor/angular-loader/angular-loader.js',
 					'scripts/vendor/angular-ui-router/release/angular-ui-router.js',
-					'scripts/vendor/ngDialog/js/ngDialog.js',
 					'scripts/vendor/moment/moment.js',
 					'scripts/vendor/angular-promise-tracker/promise-tracker.js',
 					'scripts/vendor/angular-shims-placeholder/dist/angular-shims-placeholder.js',
@@ -26,7 +25,6 @@ module.exports = function ( grunt ) {
 					'scripts/app.js',
 					'scripts/controllers/**/*.js',
 					'scripts/directives/**/*.js',
-					'scripts/filters/**/*.js',
 					'scripts/services/**/*.js',
 
 					'scripts/vendor/CSS-Filters-Polyfill/lib/cssParser.js',

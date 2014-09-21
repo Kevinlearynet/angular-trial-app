@@ -188,25 +188,46 @@ body.ngdialog-open {
 .ngdialog-post-detail  {
 
 	position: absolute;
-
-	// rounded edges over media
-	.ngdialog-content {
-		display: block;
-		overflow: hidden;
-		.border-radius( 4px );
-	}
+	min-height: 100%;
+	height: auto;
+	@width: 975px;
 
 	// dialog window
 	.ngdialog-content {
+		display: block;
+		margin: 100px auto;
+		.border-radius( 4px );
 		background: white;
-		width: 975px;
+		width: @width;
+		figure {
+			overflow: hidden;
+			.border-radius( 4px 4px 0 0 );
+		}
+	}
+
+	// overlay
+	.ngdialog-overlay {
+		min-height: 100%;
+		height: auto;
+	}
+
+	// replies
+	.post-replies {
+		overflow-y: auto;
 	}
 
 	@media (max-width: 767px) {
 		.ngdialog-content {
 			width: auto;
 			padding: 0;
+			margin: 0;
 			.border-radius( 0 );
+			figure {
+				.border-radius( 0 );
+				> img {
+					max-width: 100%;
+				}
+			}
 		}
 	}
 }

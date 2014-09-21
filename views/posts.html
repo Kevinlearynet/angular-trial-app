@@ -22,8 +22,27 @@
 
 	<main role="main" class="posts-list {{layoutClass}}">
 		<div class="container">
-			<article class="post post-primary" ng-repeat="(id, post) in filterProp(posts)" ng-animate="'slide'" id="{{id}}">
-				<div ng-include src="'/views/_post.html'"></div>
+			<article class="post post-primary" ng-repeat="(id, post) in filterProp(posts)" id="post-{{id}}">
+				<div class="post-inner">
+					<span class="avatar m-avatar">
+						<img ng-src="{{ formatAvatar(post.avatar, 40) }}" alt="{{post.name}}" class="avatar">
+					</span>
+					<div class="post-content">
+						<strong class="full-name">{{post.name}}</strong>
+						<p>{{post.message}}</p>
+					</div>
+					<div class="post-actions">
+						<a ng-click=""><i class="icon-reply"></i></a>
+						<a ng-click=""><i class="icon-like"></i></a>
+						<span timeago="{{post.time}}" class="time" />
+					</div>
+					<figure class="post-photo" ng-if="post.photo" ui-sref="posts.detail({ id: id })">
+						<img ng-src="{{post.photo}}">
+					</figure>
+					<figure class="post-video" ng-if="post.video" ui-sref="posts.detail({ id: id })">
+						<img ng-src="{{post.video}}">
+					</figure>
+				</div>
 			</article>
 		</div>
 	</main>

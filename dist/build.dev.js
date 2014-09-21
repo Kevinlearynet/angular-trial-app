@@ -29490,26 +29490,39 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog', 'a
 ( function ( angular, app ) {
 
 	// root expressions
-	app.run( function ( $rootScope, $state, $stateParams, UserService ) {
+	app.run( [ '$rootScope', '$state', '$stateParams', 'UserService', '$window', '$document',
+		function ( $rootScope, $state, $stateParams, UserService, $window, $document ) {
 
-		// global variables used on every page in app
-		$rootScope.site = {
-			name: 'Simply Social',
-			currentYear: new Date().getFullYear()
-		};
+			// global variables used on every page in app
+			$rootScope.site = {
+				name: 'Simply Social',
+				currentYear: new Date().getFullYear()
+			};
 
-		// global user data
-		$rootScope.user = UserService.getUser( 1 );
-		$rootScope.user.avatar = $rootScope.user.avatar;
+			// global user data
+			$rootScope.user = UserService.getUser( 1 );
+			$rootScope.user.avatar = $rootScope.user.avatar;
 
-		// global state references
-		$rootScope.$state = $state;
-		$rootScope.$stateParams = $stateParams;
-	} ).
+			// global state references
+			$rootScope.$state = $state;
+			$rootScope.$stateParams = $stateParams;
+
+			// positioning for dialog states
+			$rootScope.$on( '$stateChangeStart',
+				function ( event, toState, toParams, fromState, fromParams ) {
+
+					// scroll to top when dialog opened, not ideal but with more time
+					// i would adapt this to scroll to the position of the triggering element
+					if ( toState.name === 'posts.detail' ) {
+						window.scrollTo( 0, 0 );
+					}
+				} );
+		}
+	] ).
 
 	// routing
-	config( [ '$stateProvider', '$urlRouterProvider', 'ngDialogProvider',
-		function ( $stateProvider, $urlRouterProvider, ngDialogProvider ) {
+	config( [ '$stateProvider', '$urlRouterProvider', 'ngDialogProvider', '$provide',
+		function ( $stateProvider, $urlRouterProvider, ngDialogProvider, $provide ) {
 
 			// default
 			$urlRouterProvider.otherwise( '/posts' );
@@ -29877,7 +29890,6 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog', 'a
 			 */
 			$scope.uploadFile = function () {
 				var file = $scope.avatarUpload;
-				console.log( 'file is ' + JSON.stringify( file ) );
 				var uploadUrl = "/fileUpload";
 				fileUpload.uploadFileToUrl( file, uploadUrl );
 			};
@@ -29886,9 +29898,7 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog', 'a
 			 * On/off switch
 			 */
 			$scope.onOffSwitch = function ( obj, $event ) {
-
-				console.log( $event.target );
-
+				// update $scope
 			};
 
 			/**
@@ -30034,11 +30044,10 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog', 'a
  * (c) 2013 MIT License, https://likeastore.com
  */
 
-( function ( window, angular, undefined ) {
+( function ( window, angular, app ) {
 	'use strict';
 
 	var module = angular.module( 'ngDialog', [] );
-
 	var $el = angular.element;
 	var isDef = angular.isDefined;
 	var style = ( document.body || document.documentElement ).style;
@@ -30049,6 +30058,7 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog', 'a
 			className: 'ngdialog-theme-default',
 			plain: false,
 			showClose: true,
+			contentStyle: null,
 			closeByDocument: true,
 			closeByEscape: true,
 			appendTo: false
@@ -30162,8 +30172,11 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog', 'a
 								template += '<div class="ngdialog-close"></div>';
 							}
 
+							// custom functionality: allow inline styles for absolute positioning of dialog
+							// content open position
+
 							self.$result = $dialog = $el( '<div id="ngdialog' + globalID + '" class="ngdialog"></div>' );
-							$dialog.html( '<div class="ngdialog-overlay"></div><div class="ngdialog-content">' + template + '</div>' );
+							$dialog.html( '<div class="ngdialog-overlay"></div><div class="ngdialog-content" ng-style="' + options.contentStyle + '">' + template + '</div>' );
 
 							if ( options.data && angular.isString( options.data ) ) {
 								var firstLetter = options.data.replace( /^\s*/, '' )[ 0 ];
@@ -30353,7 +30366,7 @@ var SimplySocial = angular.module( 'SimplySocial', [ 'ui.router', 'ngDialog', 'a
 		}
 	] );
 
-} )( window, window.angular );;
+} )( window, angular, SimplySocial );;
 
 //############[  scripts/directives/ng-enter.js  ]############
 

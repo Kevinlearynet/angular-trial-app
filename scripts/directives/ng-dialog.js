@@ -4,11 +4,10 @@
  * (c) 2013 MIT License, https://likeastore.com
  */
 
-( function ( window, angular, undefined ) {
+( function ( window, angular, app ) {
 	'use strict';
 
 	var module = angular.module( 'ngDialog', [] );
-
 	var $el = angular.element;
 	var isDef = angular.isDefined;
 	var style = ( document.body || document.documentElement ).style;
@@ -19,6 +18,7 @@
 			className: 'ngdialog-theme-default',
 			plain: false,
 			showClose: true,
+			contentStyle: null,
 			closeByDocument: true,
 			closeByEscape: true,
 			appendTo: false
@@ -132,8 +132,11 @@
 								template += '<div class="ngdialog-close"></div>';
 							}
 
+							// custom functionality: allow inline styles for absolute positioning of dialog
+							// content open position
+
 							self.$result = $dialog = $el( '<div id="ngdialog' + globalID + '" class="ngdialog"></div>' );
-							$dialog.html( '<div class="ngdialog-overlay"></div><div class="ngdialog-content">' + template + '</div>' );
+							$dialog.html( '<div class="ngdialog-overlay"></div><div class="ngdialog-content" ng-style="' + options.contentStyle + '">' + template + '</div>' );
 
 							if ( options.data && angular.isString( options.data ) ) {
 								var firstLetter = options.data.replace( /^\s*/, '' )[ 0 ];
@@ -323,4 +326,4 @@
 		}
 	] );
 
-} )( window, window.angular );
+} )( window, angular, SimplySocial );
