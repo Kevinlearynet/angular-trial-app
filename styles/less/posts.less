@@ -177,10 +177,16 @@ main.posts-list {
 
 // layout: list (default)
 main.posts-layout-list {
+	article.post {
+		overflow: hidden;
+	}
 	.container {
 		width: 575px;
 	}
 	@media (max-width: 767px) {
+		article.post {
+			overflow: visible;
+		}
 		.container {
 			width: auto;
 			padding: 0;
