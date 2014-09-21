@@ -2,7 +2,7 @@
 
 	<section class="hero">
 		<form ng-controller="post.CreatePostCtrl" ng-class="{true: 'error'}[messageError]"  id="post-create-form" class="posts-add">
-			<input type="text" placeholder="What's on your mind?" ng-model="post.message" ng-enter="createPost()" ng-keypress="validate()" value="{{post.message}}">
+			<input type="text" placeholder="What's on your mind?" ng-model="post.message" ng-enter="createPost()" ng-keypress="validate()" ng-value="{{post.message}}">
 			<a ng-click="addPhoto" ng-model="post.photo" class="posts-add-action"><i class="icon-photo"></i> Add Photo</a>
 			<a ng-click="addVideo" ng-model="post.video" class="posts-add-action"><i class="icon-video"></i> Add Video</a>
 		</form>
@@ -25,7 +25,7 @@
 			<article class="post post-primary" ng-repeat="(id, post) in filterProp(posts)" id="post-{{id}}">
 				<div class="post-inner">
 					<span class="avatar m-avatar">
-						<img ng-src="{{ formatAvatar(post.avatar, 40) }}" alt="{{post.name}}" class="avatar">
+						<img ng-src="{{ formatAvatar(post.avatar, 40) }}" ng-alt="{{post.name}}" class="avatar">
 					</span>
 					<div class="post-content">
 						<strong class="full-name">{{post.name}}</strong>

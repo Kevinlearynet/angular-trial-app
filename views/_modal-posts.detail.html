@@ -7,9 +7,9 @@
 </figure>
 
 <div class="post-replies">
-	<article class="post post-reply" ng-repeat="(id, reply) in replies" id="{{id}}">
+	<article class="post post-reply" ng-repeat="(id, reply) in replies" ng-attr-id="{{id}}">
 		<span class="avatar m-avatar">
-			<img ng-src="{{ formatAvatar(reply.avatar, 40) }}" alt="{{reply.name}}" class="avatar">
+			<img ng-src="{{ formatAvatar(reply.avatar, 40) }}" ng-alt="{{reply.name}}" class="avatar">
 		</span>
 		<div class="post-content">
 			<strong class="full-name">{{reply.name}}</strong>
@@ -24,5 +24,5 @@
 </div>
 
 <form class="post-reply-form">
-	<input type="text" ng-model="reply.message" placeholder="Reply" ng-enter="createReply()" value="{{reply.message}}" />
+	<input type="text" ng-model="reply.message" placeholder="Reply" ng-enter="createReply()" ng-value="{{reply.message}}" />
 </form>

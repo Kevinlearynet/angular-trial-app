@@ -330,6 +330,7 @@ body.ngdialog-open .ngdialog-content {
   border-radius: 4px;
   background: white;
   width: 975px;
+  max-width: 90%;
 }
 .ngdialog-post-detail .ngdialog-content figure {
   overflow: hidden;
@@ -349,6 +350,7 @@ body.ngdialog-open .ngdialog-content {
     width: auto;
     padding: 0;
     margin: 0;
+    max-width: 100%;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
     border-radius: 0;
